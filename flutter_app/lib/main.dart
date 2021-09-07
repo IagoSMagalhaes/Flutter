@@ -1,6 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/transferencia/lista.dart';
+import 'package:flutter_app/router/main/asset_router.dart';
+import 'package:flutter_app/screens/asset/screens_asset_form_save.dart';
+import 'package:flutter_app/screens/asset/screens_asset_list_all.dart';
 
+void main() => runApp(Boot());
+
+class Boot extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return MaterialApp(
+        theme: buildTheme(),
+        initialRoute: "/home",
+        routes: AssetRouter().getRoutes());
+  }
+
+
+
+  ThemeData buildTheme() {
+    return ThemeData(
+      primaryColor: Colors.green[900],
+      accentColor: Colors.blueAccent[700],
+      buttonTheme: ButtonThemeData(
+        buttonColor: Colors.blueAccent[700],
+        textTheme: ButtonTextTheme.primary,
+      ),
+    );
+  }
+}
+
+/*   Example First Project
 void main() => runApp(Boot());
 
 class Boot extends StatelessWidget {
@@ -20,36 +49,7 @@ class Boot extends StatelessWidget {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ */
 
 /*
 void main() {
