@@ -155,8 +155,8 @@ class ScreensAssetFormState extends State<ScreensAssetForm> {
     );
   }
 
-  RaisedButton buildInputSend() {
-    return RaisedButton(
+  ElevatedButton buildInputSend() {
+    return ElevatedButton(
         onPressed: () => _saveAsset(context), child: Text(_textoBotao));
   }
 }

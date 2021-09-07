@@ -50,7 +50,7 @@ class FormularioTransacoesState extends State<FormularioTransacoes>{
               rotulo: _rotuloCampoValor,
               dica: _dicaCampoValor,
             ),
-            RaisedButton(
+            ElevatedButton(
                 onPressed: () => _criaTransferencia(context),
                 child: Text(_textoBotao))
           ],
