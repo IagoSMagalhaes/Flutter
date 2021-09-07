@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/http/asset/http_asset.dart';
 import 'package:flutter_app/router/main/asset_router.dart';
 import 'package:flutter_app/screens/asset/screens_asset_form_save.dart';
 import 'package:flutter_app/screens/asset/screens_asset_list_all.dart';
 
-void main() => runApp(Boot());
+void main() {
+  runApp(Boot());
+  HttpAsset().findById().then((value) => print(value?.title));
+}
+
 
 class Boot extends StatelessWidget {
   @override

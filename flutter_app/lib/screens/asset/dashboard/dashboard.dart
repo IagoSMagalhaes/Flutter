@@ -114,6 +114,7 @@ Icon _iconScreenAssetFormPost() => Icon(Icons.add, color: Colors.white, size: 24
 Icon _iconScreenAssetList() => Icon(Icons.add, color: Colors.white, size: 24.0);
 
 void _navigateToScreenAssetList(context) => _navigateTo(context,  ScreenAssetList());
+
 void _navigateToScreenAssetFormPost(context) => _navigateTo(context,  ScreensAssetForm());
 
 void _navigateTo(context, StatefulWidget statefulWidget) => Navigator.of(context).push(
