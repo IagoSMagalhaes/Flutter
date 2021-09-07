@@ -111,7 +111,8 @@ class ItemDashboard extends StatelessWidget {
 //NAVIGATE
 
 Icon _iconScreenAssetFormPost() => Icon(Icons.add, color: Colors.white, size: 24.0);
-Icon _iconScreenAssetList() => Icon(Icons.add, color: Colors.white, size: 24.0);
+
+Icon _iconScreenAssetList() => Icon(Icons.search, color: Colors.white, size: 24.0);
 
 void _navigateToScreenAssetList(context) => _navigateTo(context,  ScreenAssetList());
 

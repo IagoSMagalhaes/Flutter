@@ -1,28 +1,63 @@
 
 
-import 'dart:io';
-
-import 'package:flutter_app/models/asset.dart';
-import 'package:http/http.dart';
 import 'dart:convert';
+
 import 'package:http/http.dart';
 
 class HttpAsset {
 
   final String postsURL = "https://jsonplaceholder.typicode.com/todos";
+  final String localhostGetAllAsset = "http://localhost:8081/v1";
 
-  Future<Response> findAll() => get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+  Future<ResponseGetAllAsset?> findAllAssets() async {
+    final httpResponse = await get(Uri.parse(localhostGetAllAsset));
+
+    ResponseGetAllAsset responseMethod = ResponseGetAllAsset([]);
+
+    if (httpResponse.statusCode == 200) {
+      List<dynamic> datas = json.decode(httpResponse.body);
+
+      List<ResponseAssetEntity> assets = [];
+
+      datas.forEach((element) => assets.add(ResponseAssetEntity.fromJson(element)));
+
+      responseMethod.assets = assets;
+
+      print(responseMethod.assets?.first.name);
+
+      return responseMethod;
+    } else {
+
+      return null;
+
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Future<Response> findAll() =>
+      get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
 
 
   Future<Test?> findById() async {
-
-    //Future<Response> httpResponse = get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
-    Response httpResponse = await get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+    Response httpResponse = await get(
+        Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
 
     Test responseMethod = Test(null, null, null);
 
     if (httpResponse.statusCode == 200) {
-
       dynamic datas = json.decode(httpResponse.body);
 
       Test jsonResponse = Test.fromJson(datas);
@@ -30,42 +65,14 @@ class HttpAsset {
       responseMethod = jsonResponse;
 
       return responseMethod;
-
     } else {
       return null;
     }
-
   }
-
-/*
-  Future<List<Test>> findAll() async {
-
-    Uri uri = Uri(path: postsURL);
-
-    Response response = await get(uri);
-    print("response.body");
-    print(response.body);
-    print("response.statusCode");
-
-    print(response.statusCode);
-
-    if (response.statusCode == 200) {
-
-      Map data = json.decode(response.body);
-
-      final test = (data['results'] as List).map((i) => new Test.fromJson(i));
-
-      return test.toList();
-
-    } else {
-      return [];
-    }
+}
 
 
 
- */
-
-  }
 
 
 
@@ -86,5 +93,46 @@ class Test {
     );
   }
 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class ResponseGetAllAsset {
+
+  List<ResponseAssetEntity>? assets;
+
+  ResponseGetAllAsset(this.assets);
+
+}
+
+
+
+class ResponseAssetEntity {
+
+  final int? id;
+  final String? name;
+
+  ResponseAssetEntity(this.id, this.name);
+
+  factory ResponseAssetEntity.fromJson(Map<String, dynamic> json) {
+
+  return ResponseAssetEntity(
+            json['id'],
+            json['name']);
+  }
 }
 

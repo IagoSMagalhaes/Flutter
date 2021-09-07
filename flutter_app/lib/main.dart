@@ -6,7 +6,9 @@ import 'package:flutter_app/screens/asset/screens_asset_list_all.dart';
 
 void main() {
   runApp(Boot());
-  HttpAsset().findById().then((value) => print(value?.title));
+  HttpAsset().findAllAssets();
+  //Example REQUEST HTTP
+  //HttpAsset().findById().then((value) => print(value?.title));
 }
 
 
