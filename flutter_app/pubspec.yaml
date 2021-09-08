@@ -26,6 +26,7 @@ dependencies:
   sqflite:
   path:
   http:
+  http_interceptor: ^1.0.1
   json_serializable: ^2.0.0
 
 
