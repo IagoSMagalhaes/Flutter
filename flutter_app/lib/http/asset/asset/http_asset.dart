@@ -91,6 +91,7 @@ Future<void> post(List<RequestPostAssetEntity> assets) async {
 
       final Map<String, dynamic> assetMap = {
         'name': asset.name,
+        'type': asset.type,
         'fullValue': asset.fullValue,
         'manager': asset.manager};
 

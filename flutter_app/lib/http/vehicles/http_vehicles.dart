@@ -13,7 +13,7 @@ import 'package:http_interceptor/http_interceptor.dart';
 class HttpVehicles {
 
   final String postsURL = "https://jsonplaceholder.typicode.com/todos";
-  final String localhostVehiclesBaseUrl = "http://localhost:8081/v1";
+  final String localhostVehiclesBaseUrl = "http://localhost:8081/vehicle/v1";
   Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
 

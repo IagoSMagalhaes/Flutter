@@ -94,8 +94,9 @@ class ScreensAssetFormState extends State<ScreensAssetForm> {
 
       if (asset.name != null) {
         final double? valor = double.tryParse(_controllerFieldAssetFullValue.text);
+        final String? type = _controllerFieldAssetType.text;
 
-        List<RequestPostAssetEntity> body = [RequestPostAssetEntity(_controllerFieldAssetName.text, valor, _controllerFieldAssetManager.text)];
+        List<RequestPostAssetEntity> body = [RequestPostAssetEntity(_controllerFieldAssetName.text, type, valor, _controllerFieldAssetManager.text)];
 
         HttpAsset().post(body);
 

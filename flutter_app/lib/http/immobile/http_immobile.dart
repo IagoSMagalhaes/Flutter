@@ -12,7 +12,7 @@ import 'package:http_interceptor/http_interceptor.dart';
 class HttpImmobile {
 
   final String postsURL = "https://jsonplaceholder.typicode.com/todos";
-  final String localhostImmobileBaseUrl = "http://localhost:8081/v1";
+  final String localhostImmobileBaseUrl = "http://localhost:8081/immobile/v1";
   Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
 
