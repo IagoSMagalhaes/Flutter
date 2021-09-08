@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/components/centered_message.dart';
-import 'package:flutter_app/components/progress.dart';
+import 'package:flutter_app/components/loading/progress.dart';
+import 'package:flutter_app/components/message/centered_message.dart';
 import 'package:flutter_app/http/asset/asset/http_asset.dart';
-import 'package:flutter_app/models/asset/asset.dart';
-import 'package:flutter_app/models/transferencia.dart';
-import 'package:flutter_app/router/asset/asset_list_all_router.dart';
-import 'package:flutter_app/screens/asset/screens_asset_form_post.dart';
+import 'package:flutter_app/http/helper/helper/http_helper.dart';
+import 'package:flutter_app/models/asset/domain/asset.dart';
+import 'package:flutter_app/models/asset/dto/response/response_get_asset_entity.dart';
 
 const _screenAssetDetailTitle = "Detalhes";
 
@@ -26,12 +25,13 @@ class ScreenAssetDetailState extends State<ScreenAssetDetail> {
         appBar: AppBar(
           title: Text(_screenAssetDetailTitle),
         ),
-        body: FutureBuilder<List<ResponseAssetEntity>>(
+        body: FutureBuilder<List<ResponseGetAssetEntity>>(
             future: HttpAsset().findAllAssets(),
             builder: (context, snapshot) {
 
 
               switch(snapshot.connectionState){
+
                 case ConnectionState.none:
                   break;
                 case ConnectionState.waiting:
@@ -40,31 +40,25 @@ class ScreenAssetDetailState extends State<ScreenAssetDetail> {
                   break;
                 case ConnectionState.done:
 
-                  if(snapshot.hasData){
-                    final List<ResponseAssetEntity>? assets = snapshot.data;
+                  HttpHelper httpHelper = HttpHelper();
 
-                    if(assets != null && assets.isNotEmpty){
-
-                      return ListView.builder(
-                        itemCount: widget._assets.length,
-                        itemBuilder: (context, index) {
-                          final asset = widget._assets[index];
-                          return AssetDetail(asset: asset);
-                        },
-                      );
+                  if(httpHelper.existData(snapshot)){
+                    return ListView.builder(
+                      itemBuilder: (context, index) => snapshot.data![index].toItem(),
+                      itemCount: snapshot.data?.length);
+                    } else {
+                      return CenteredMessage("No Contacts found", icon: Icons.warning);
                     }
-                  } else {
-                    return CenteredMessage("No Assets found", icon: Icons.warning);
                   }
-                }
+
                   return CenteredMessage("Unknow error");
               }),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-//            navigatorToAssetFormPost(context).then((newAsset) => _update(newAsset));
-            //},
-          }));
+              floatingActionButton: FloatingActionButton(
+                child: Icon(Icons.add),
+                onPressed: () {
+      //            navigatorToAssetFormPost(context).then((newAsset) => _update(newAsset));
+                  //},
+                }));
   }
 }
 

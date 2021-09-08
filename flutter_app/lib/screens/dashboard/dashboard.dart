@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/asset/screens_asset_form_post.dart';
 import 'package:flutter_app/screens/asset/screens_asset_list_all.dart';
+import 'package:flutter_app/screens/immobile/screens_immobile_list_all.dart';
 import 'package:flutter_app/screens/owner/screens_owners_list_all.dart';
+import 'package:flutter_app/screens/vehicles/screens_vehicles_list_all.dart';
 
 
 class Dashboard extends StatelessWidget {
@@ -44,16 +46,19 @@ class Dashboard extends StatelessWidget {
         children: [
           buildOwner(context),
           buildSearch(context),
-          buildPost(context)]),
+          buildPost(context),
+          buildVehicles(context),
+          buildImmobile(context),
+        ]),
   );
 
 
-  ItemDashboard buildOwner(context) => ItemDashboard(name: "Contatos",
+  buildOwner(context) => ItemDashboard(name: "Contatos",
       icon: _iconScreenOwnerList(),
       onClick: () => _navigateToScreenOwnerList(context));
 
 
-  ItemDashboard buildSearch(context) => ItemDashboard(name: "Buscar Patrimônios",
+  buildSearch(context) => ItemDashboard(name: "Buscar Patrimônios",
                                                       icon: _iconScreenAssetList(),
                                                       onClick: () => _navigateToScreenAssetList(context));
 
@@ -61,6 +66,15 @@ class Dashboard extends StatelessWidget {
   buildPost(context) => ItemDashboard(name: "Novo Patrimônio",
                                       icon: _iconScreenAssetFormPost(),
                                       onClick: () => _navigateToScreenAssetFormPost(context));
+
+  buildImmobile(context) => ItemDashboard(name: "Imóveis",
+      icon: _iconScreenImmobileList(),
+      onClick: () => _navigateToScreenImmobileList(context));
+
+
+  buildVehicles(context) => ItemDashboard(name: "Veículos",
+      icon: _iconScreenVehiclesList(),
+      onClick: () => _navigateToScreenVehiclesList(context));
 
 }
 
@@ -114,9 +128,6 @@ class ItemDashboard extends StatelessWidget {
 
 
 
-
-
-
 //NAVIGATE
 
 Icon _iconScreenAssetFormPost() => Icon(Icons.add, color: Colors.white, size: 24.0);
@@ -125,11 +136,18 @@ Icon _iconScreenAssetList() => Icon(Icons.search, color: Colors.white, size: 24.
 
 Icon _iconScreenOwnerList() => Icon(Icons.contact_page, color: Colors.white, size: 24.0);
 
+Icon _iconScreenVehiclesList() => Icon(Icons.car_repair, color: Colors.white, size: 24.0);
 
-void _navigateToScreenAssetList(context) => _navigateTo(context,  ScreenAssetList());
+Icon _iconScreenImmobileList() => Icon(Icons.home, color: Colors.white, size: 24.0);
 
-void _navigateToScreenOwnerList(context) => _navigateTo(context,  ScreenOwnerList());
 
+void _navigateToScreenAssetList(context) => _navigateTo(context,  ScreenAssetListAllStatefulAbstract());
+//void _navigateToScreenOwnerList(context) => _navigateTo(context,  ScreenOwnerList());
+
+void _navigateToScreenOwnerList(context) => _navigateTo(context,  ScreenOwnerListAllStatefulAbstract());
+
+void _navigateToScreenVehiclesList(context) => _navigateTo(context,  ScreenVehiclesListAllStatefulAbstract());
+void _navigateToScreenImmobileList(context) => _navigateTo(context,  ScreenImmobileListAllStatefulAbstract());
 void _navigateToScreenAssetFormPost(context) => _navigateTo(context,  ScreensAssetForm());
 
 void _navigateTo(context, StatefulWidget statefulWidget) =>

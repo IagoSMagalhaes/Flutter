@@ -1,12 +1,10 @@
 // Criando formulario
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/components/editor.dart';
-import 'package:flutter_app/components/field_input.dart';
+import 'package:flutter_app/components/field/field_input.dart';
 import 'package:flutter_app/http/asset/asset/http_asset.dart';
-import 'package:flutter_app/models/asset/asset.dart';
-import 'package:flutter_app/models/transferencia.dart';
-import 'package:flutter_app/screens/asset/screens_asset_list_all.dart';
+import 'package:flutter_app/models/asset/domain/asset.dart';
+import 'package:flutter_app/models/asset/dto/request/request_post_asset_entity.dart';
 
 const _titulo = "Criar patrimônio";
 
@@ -86,12 +84,13 @@ class ScreensAssetFormState extends State<ScreensAssetForm> {
     //TODO - TRANSFORMAR STRING PRA ENUM
 
     if (_controllerFieldAssetName.value != null) {
-      Asset asset = Asset(
-          name: _controllerFieldAssetName.text,
-          type: AssetType.immobile,
-          operationType: OperationType.buy,
-          fullValue: double.tryParse(_controllerFieldAssetFullValue.text),
-          manager: _controllerFieldAssetManager.text);
+      //Asset asset = Asset(name: _controllerFieldAssetName.text,
+//          type: AssetType.immobile,
+//          operationType: OperationType.buy,
+//          fullValue: double.tryParse(_controllerFieldAssetFullValue.text),
+//          manager: _controllerFieldAssetManager.text);
+
+      Asset asset = Asset(null, _controllerFieldAssetName.text.toString(), null, null, 10, _controllerFieldAssetManager.text);
 
       if (asset.name != null) {
         final double? valor = double.tryParse(_controllerFieldAssetFullValue.text);
@@ -123,13 +122,6 @@ class ScreensAssetFormState extends State<ScreensAssetForm> {
  */
   }
 
-  void _showScreenAssetListAll(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ScreenAssetList(),
-      ),
-    );
-  }
 
   FieldInput buildInputName() {
     return FieldInput(

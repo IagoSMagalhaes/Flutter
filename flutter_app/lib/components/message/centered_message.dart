@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
 
+const _screenOwnerIsEmpty = "Não existe contados cadastrados";
+const _screenAssetIsEmpty = "Não existe patrimônios cadastrados";
+const _unknowError = "Erro desconhecido";
+
+
+
+
 class CenteredMessage extends StatelessWidget {
   final String message;
   final IconData? icon;
@@ -41,3 +48,17 @@ class CenteredMessage extends StatelessWidget {
     );
   }
 }
+
+class CenteredMessageFactory {
+
+  CenteredMessage ownerIsEmpty() =>
+      CenteredMessage(_screenOwnerIsEmpty, icon: Icons.warning);
+
+  CenteredMessage assetIsEmpty() =>
+      CenteredMessage(_screenAssetIsEmpty, icon: Icons.warning);
+
+  CenteredMessage unknowError() => CenteredMessage(_unknowError);
+
+
+}
+

@@ -2,8 +2,9 @@
 
 import 'dart:convert';
 
-import 'package:flutter_app/http/interceptor/http_interceptor.dart';
-import 'package:flutter_app/models/asset/asset.dart';
+import 'package:flutter_app/http/helper/interceptor/http_interceptor.dart';
+import 'package:flutter_app/models/asset/dto/request/request_post_asset_entity.dart';
+import 'package:flutter_app/models/asset/dto/response/response_get_asset_entity.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
@@ -15,10 +16,10 @@ class HttpAsset {
   Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
 
-  Future<List<ResponseAssetEntity>> findAllAssets() async {
+  Future<List<ResponseGetAssetEntity>> findAllAssets() async {
 
     final httpResponse = await client.get(Uri.parse(localhostAssetBaseUrl)).timeout(Duration(seconds: 15));
-    List<ResponseAssetEntity> responseMethod = [];
+    List<ResponseGetAssetEntity> responseMethod = [];
 
 /*
     final Response response = await client.get('http://192.168.3.46:8080/transactions');
@@ -46,9 +47,9 @@ class HttpAsset {
     if (httpResponse.statusCode == 200) {
       List<dynamic> datas = json.decode(httpResponse.body);
 
-      List<ResponseAssetEntity> assets = [];
+      List<ResponseGetAssetEntity> assets = [];
 
-      datas.forEach((element) => assets.add(ResponseAssetEntity.fromJson(element)));
+      datas.forEach((element) => assets.add(ResponseGetAssetEntity.fromJson(element)));
 
       responseMethod = assets;
 
@@ -103,8 +104,8 @@ Future<void> post(List<RequestPostAssetEntity> assets) async {
 
       if(httpResponse.statusCode == 200){
        // Map<String, dynamic> json = jsonDecode(httpResponse.body);
-        //List<ResponseAssetEntity> assets = [];
-        //datas.forEach((element) => assets.add(ResponseAssetEntity.fromJson(element)));
+        //List<ResponseGetAssetEntity> assets = [];
+        //datas.forEach((element) => assets.add(ResponseGetAssetEntity.fromJson(element)));
         //responseMethod = assets;
       }
     });
@@ -186,48 +187,10 @@ class Test {
 
 class ResponseGetAllAsset {
 
-  List<ResponseAssetEntity>? assets;
+  List<ResponseGetAssetEntity>? assets;
 
   ResponseGetAllAsset(this.assets);
 
 }
 
-
-
-class ResponseAssetEntity {
-
-  final int? id;
-  final String? name;
-  final String? manager;
-
-  ResponseAssetEntity(this.id, this.name, this.manager);
-
-  factory ResponseAssetEntity.fromJson(Map<String, dynamic> json) {
-
-  return ResponseAssetEntity(
-            json['id'],
-            json['name'],
-            json['manager']);
-  }
-}
-
-class RequestPostAssetEntity {
-
-  final String? name;
-  final double? fullValue;
-  final String? manager;
-
-
-  RequestPostAssetEntity(this.name, this.fullValue, this.manager);
-
-  factory RequestPostAssetEntity.fromJson(Map<String, dynamic> json) {
-
-    return RequestPostAssetEntity(
-        json['name'],
-        json['fullValue'],
-        json['manager']);
-  }
-
-
-}
 

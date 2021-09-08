@@ -1,9 +1,10 @@
 // Criando formulario
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/components/field_input.dart';
+import 'package:flutter_app/components/field/field_input.dart';
 import 'package:flutter_app/http/asset/owner/http_owner.dart';
-import 'package:flutter_app/models/owner/owner.dart';
+import 'package:flutter_app/models/owner/dto/request/request_post_owner.dart';
+import 'package:flutter_app/models/owner/domain/owner.dart';
 
 const _titulo = "Criar Contato";
 

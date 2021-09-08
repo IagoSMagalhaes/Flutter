@@ -3,7 +3,7 @@ import 'package:flutter_app/http/asset/asset/http_asset.dart';
 import 'package:flutter_app/http/asset/owner/http_owner.dart';
 import 'package:flutter_app/router/main/asset_router.dart';
 
-import 'models/owner/owner.dart';
+import 'models/owner/domain/owner.dart';
 
 void main() {
   runApp(Boot());

@@ -2,8 +2,9 @@
 
 import 'dart:convert';
 
-import 'package:flutter_app/http/interceptor/http_interceptor.dart';
-import 'package:flutter_app/models/owner/owner.dart';
+import 'package:flutter_app/http/helper/interceptor/http_interceptor.dart';
+import 'package:flutter_app/models/owner/dto/request/request_post_owner.dart';
+import 'package:flutter_app/models/owner/dto/response/response_get_owner_entity.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 

@@ -3,7 +3,7 @@
 // Criando formulario
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/components/editor.dart';
+import 'package:flutter_app/components/editor/editor.dart';
 import 'package:flutter_app/models/transferencia.dart';
 
 

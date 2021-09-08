@@ -1,12 +1,69 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/components/centered_message.dart';
-import 'package:flutter_app/components/progress.dart';
+import 'package:flutter_app/components/message/centered_message.dart';
+import 'package:flutter_app/components/loading/progress.dart';
+import 'package:flutter_app/components/screen/abstract_screen.dart';
 import 'package:flutter_app/http/asset/asset/http_asset.dart';
-import 'package:flutter_app/models/asset/asset.dart';
+import 'package:flutter_app/http/helper/helper/http_helper.dart';
+import 'package:flutter_app/models/asset/domain/asset.dart';
+import 'package:flutter_app/models/owner/domain/owner.dart';
 import 'package:flutter_app/models/transferencia.dart';
 import 'package:flutter_app/router/asset/asset_list_all_router.dart';
 import 'package:flutter_app/screens/asset/screens_asset_form_post.dart';
+
+
+
+
+
+class ScreenAssetListAllStatefulAbstract extends ScreenAbstractListAll {
+
+  ScreenAssetListAllStatefulAbstract() : super(screenStateListAll: ScreenAssetListAllStateAbstract());
+
+}
+
+class ScreenAssetListAllStateAbstract extends AbstractScreenStateListAll {
+
+  @override
+  Future<List<AbstractResponse>> future = HttpAsset().findAllAssets();
+
+  @override
+  get title => "Patrimônios";
+
+  @override
+  get navigateScreenButton => ScreensAssetForm();
+
+  @override
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
 
 const _screenAssetListTitle = "Patrimônios";
 
@@ -20,58 +77,70 @@ class ScreenAssetList extends StatefulWidget {
 }
 
 class ScreenAssetListState extends State<ScreenAssetList> {
+
+  HttpHelper httpHelper = HttpHelper();
+  CenteredMessageFactory centeredMessageFactory = CenteredMessageFactory();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(_screenAssetListTitle),
-        ),
-        body: FutureBuilder<List<ResponseAssetEntity>>(
-            initialData: [],
-            future: HttpAsset().findAllAssets(),
-          //  future: Future.delayed(Duration(seconds: 1)).then((value) => HttpAsset().findAllAssets()),
-            builder: (context, snapshot) {
-
-              switch(snapshot.connectionState){
-                case ConnectionState.none:
-                  break;
-                case ConnectionState.waiting:
-                  return Progress();
-                case ConnectionState.active:
-                  break;
-                case ConnectionState.done:
-
-                  if(snapshot.hasData){
-
-                    final List<ResponseAssetEntity>? assets = snapshot.data;
-
-                    if(assets != null && assets.isNotEmpty){
-
-                      return ListView.builder(
-                        itemBuilder: (context, index) {
-
-                          ResponseAssetEntity indexAsset = assets[index];
-
-                          final Asset assetSave = Asset(id: indexAsset.id, name: indexAsset.name, manager: indexAsset.name);
-
-                          return AssetItemList(asset: assetSave, onClick: _navigateToScreenAssetDetail);
-                        },
-                        itemCount: assets.length,
-                      );
-                    }
-                  } else {
-                    return CenteredMessage("No Assets found", icon: Icons.warning);
-                  }
-                }
-                  return CenteredMessage("Unknow error");
-              }),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            navigatorToAssetFormPost(context).then((newAsset) => _update(newAsset));
-          },
-        ));
+        appBar: buildTitle(),
+        body: buildBody(),
+        floatingActionButton: buildActionButton(context));
   }
+
+
+
+  AppBar buildTitle() {
+    return AppBar(
+      title: Text(_screenAssetListTitle),
+    );
+  }
+
+  FutureBuilder<List<ResponseGetAssetEntity>> buildBody() {
+    return FutureBuilder<List<ResponseGetAssetEntity>>(
+        initialData: [],
+        future: HttpAsset().findAllAssets(),
+        //  future: Future.delayed(Duration(seconds: 1)).then((value) => HttpAsset().findAllAssets()),
+        builder: (context, snapshot) {
+
+          switch(snapshot.connectionState){
+            case ConnectionState.none:
+              break;
+            case ConnectionState.waiting:
+              return Progress();
+            case ConnectionState.active:
+              break;
+            case ConnectionState.done:
+
+              if(httpHelper.existData(snapshot)){
+                return ListView.builder(
+                    itemBuilder: (context, index) => snapshot.data![index].toAssetItem(),
+                    itemCount: snapshot.data?.length);
+              } else {
+                return centeredMessageFactory.assetIsEmpty();
+              }
+          }
+          return centeredMessageFactory.unknowError();
+        });
+  }
+
+
+
+
+  FloatingActionButton buildActionButton(BuildContext context) {
+    return FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          navigatorToAssetFormPost(context).then((newAsset) => _update(newAsset));
+        },
+      );
+  }
+
+
+
+
+
 
   void _update(Asset asset) {
     if (asset != null) {
@@ -84,14 +153,12 @@ class ScreenAssetListState extends State<ScreenAssetList> {
 
 
 
-void _navigateToScreenAssetDetail(context) => _navigateTo(context,  ScreenAssetList());
-
+//void _navigateToScreenAssetDetail(context) => _navigateTo(context,  ScreenAssetList());
 //Icon _iconScreenAssetDetail() => Icon(Icons.search, color: Colors.white, size: 24.0);
-
-void _navigateTo(context, StatefulWidget statefulWidget) => Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => statefulWidget,
-    ));
+//void _navigateTo(context, StatefulWidget statefulWidget) => Navigator.of(context).push(
+//    MaterialPageRoute(
+//      builder: (context) => statefulWidget,
+//    ));
 
 
 
@@ -101,6 +168,7 @@ void _navigateTo(context, StatefulWidget statefulWidget) => Navigator.of(context
 
 // Abstração Item da lista
 class AssetItemList extends StatelessWidget {
+
   final Asset asset;
   final Function onClick;
 
@@ -120,3 +188,6 @@ class AssetItemList extends StatelessWidget {
 
 
 
+
+
+ */
