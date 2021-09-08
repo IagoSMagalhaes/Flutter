@@ -1,7 +1,7 @@
 class Owner {
   final int? id;
-  final String name;
-  final String cellphone;
+  final String? name;
+  final String? cellphone;
 
 
   Owner(

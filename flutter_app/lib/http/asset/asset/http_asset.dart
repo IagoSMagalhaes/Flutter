@@ -85,7 +85,6 @@ class HttpAsset {
 
 
 Future<void> post(List<RequestPostAssetEntity> assets) async {
-    print("post");
 
     assets.forEach((asset) async {
 
@@ -93,7 +92,6 @@ Future<void> post(List<RequestPostAssetEntity> assets) async {
         'name': asset.name,
         'fullValue': asset.fullValue,
         'manager': asset.manager};
-
 
       final String assetJson = jsonEncode(assetMap);
 
@@ -103,7 +101,6 @@ Future<void> post(List<RequestPostAssetEntity> assets) async {
                                               body: assetJson)
                                         .timeout(Duration(seconds: 15));
 
-      print("REQUEST POST ASSET OK");
       if(httpResponse.statusCode == 200){
        // Map<String, dynamic> json = jsonDecode(httpResponse.body);
         //List<ResponseAssetEntity> assets = [];
@@ -201,14 +198,16 @@ class ResponseAssetEntity {
 
   final int? id;
   final String? name;
+  final String? manager;
 
-  ResponseAssetEntity(this.id, this.name);
+  ResponseAssetEntity(this.id, this.name, this.manager);
 
   factory ResponseAssetEntity.fromJson(Map<String, dynamic> json) {
 
   return ResponseAssetEntity(
             json['id'],
-            json['name']);
+            json['name'],
+            json['manager']);
   }
 }
 

@@ -42,16 +42,21 @@ class ScreenAssetListState extends State<ScreenAssetList> {
                 case ConnectionState.done:
 
                   if(snapshot.hasData){
+
                     final List<ResponseAssetEntity>? assets = snapshot.data;
 
                     if(assets != null && assets.isNotEmpty){
 
                       return ListView.builder(
                         itemBuilder: (context, index) {
-                          final asset = widget._assets[index];
-                          return AssetItemList(asset: asset, onClick: _navigateToScreenAssetDetail);
+
+                          ResponseAssetEntity indexAsset = assets[index];
+
+                          final Asset assetSave = Asset(id: indexAsset.id, name: indexAsset.name, manager: indexAsset.name);
+
+                          return AssetItemList(asset: assetSave, onClick: _navigateToScreenAssetDetail);
                         },
-                        itemCount: widget._assets.length,
+                        itemCount: assets.length,
                       );
                     }
                   } else {
@@ -103,7 +108,6 @@ class AssetItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("teste");
     return Card(
         child: ListTile(
           onTap: () => onClick(),

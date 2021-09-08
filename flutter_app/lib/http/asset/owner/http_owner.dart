@@ -55,7 +55,7 @@ class HttpOwner {
                                       .timeout(Duration(seconds: 15));
 
       if(httpResponse.statusCode == 200){
-        print("OK OWNER POST");
+        //print("OK OWNER POST");
       }
     });
   }

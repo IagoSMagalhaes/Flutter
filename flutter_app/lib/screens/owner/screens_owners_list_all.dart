@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/components/centered_message.dart';
 import 'package:flutter_app/components/progress.dart';
 import 'package:flutter_app/http/asset/owner/http_owner.dart';
 import 'package:flutter_app/models/owner/owner.dart';
 import 'package:flutter_app/screens/owner/screens_owner_form_post.dart';
 
+const _screenOwnerListTitle = "Contatos";
 
 class ScreenOwnerList extends StatefulWidget {
-
   @override
   _ScreenOwnerListState createState() => _ScreenOwnerListState();
 }
@@ -18,7 +19,7 @@ class _ScreenOwnerListState extends State<ScreenOwnerList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Contatos'),
+        title: Text(_screenOwnerListTitle),
       ),
       body: FutureBuilder<List<ResponseOwnerEntity>>(
         initialData: [],
@@ -34,17 +35,25 @@ class _ScreenOwnerListState extends State<ScreenOwnerList> {
               break;
             case ConnectionState.done:
               final List<ResponseOwnerEntity>? owner = snapshot.data;
-              //final List<OwnerAsset>? owner = snapshot.data;
-              return ListView.builder(
 
-                itemBuilder: (context, index) {
-                  final Owner ownerSave = owner![index] as Owner;
+              if (snapshot.hasData) {
+                if (owner != null && owner.isNotEmpty) {
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
 
-                  return _OwnerAssetItem(ownerSave);
-                },
-                itemCount: owner?.length,
-              );
-              break;
+                      ResponseOwnerEntity indexOwner = owner[index];
+
+                      final Owner ownerSave = Owner(indexOwner.id, indexOwner.name, indexOwner.cellphone);
+
+                      return _OwnerAssetItem(ownerSave);
+                      },
+                    itemCount: owner.length,
+                  );
+                }
+              } else {
+                return CenteredMessage("No Contacts found",
+                    icon: Icons.warning);
+              }
           }
           return Text('Unknown error');
         },
@@ -52,26 +61,24 @@ class _ScreenOwnerListState extends State<ScreenOwnerList> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           navigateToOwnerPost(context).then((value) => setState(() {}));
-          },
-        child: Icon(Icons.add,),
+        },
+        child: Icon(
+          Icons.add,
+        ),
       ),
     );
   }
 
   Future<dynamic> navigateToOwnerPost(BuildContext context) {
     return Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ScreensOwnerForm(),
-          ),
-        );
+      MaterialPageRoute(
+        builder: (context) => ScreensOwnerForm(),
+      ),
+    );
   }
-
-
-
 }
 
 class _OwnerAssetItem extends StatelessWidget {
-
   final Owner owner;
 
   _OwnerAssetItem(this.owner);
@@ -81,7 +88,7 @@ class _OwnerAssetItem extends StatelessWidget {
     return Card(
       child: ListTile(
         title: Text(
-          owner.name,
+          owner.name!,
           style: TextStyle(
             fontSize: 24.0,
           ),
@@ -96,4 +103,3 @@ class _OwnerAssetItem extends StatelessWidget {
     );
   }
 }
-

@@ -32,11 +32,8 @@ class ListaTransferenciaState extends State<ListaTransferencias> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              print("passando para salvar");
               return FormularioTransacoes();
             })).then((transferenciaRecebida) => _atualiza(transferenciaRecebida));
-
-            print("terminei o add");
 
           },
           child: Icon(Icons.add),

@@ -28,11 +28,9 @@ class ScreenAssetDetailState extends State<ScreenAssetDetail> {
         ),
         body: FutureBuilder<List<ResponseAssetEntity>>(
             future: HttpAsset().findAllAssets(),
-          //  future: Future.delayed(Duration(seconds: 1)).then((value) => HttpAsset().findAllAssets()),
             builder: (context, snapshot) {
 
-              final List<ResponseAssetEntity>? assets = snapshot.data;
-              print("teste4");
+
               switch(snapshot.connectionState){
                 case ConnectionState.none:
                   break;
@@ -41,12 +39,12 @@ class ScreenAssetDetailState extends State<ScreenAssetDetail> {
                 case ConnectionState.active:
                   break;
                 case ConnectionState.done:
-                  print("teste2");
+
                   if(snapshot.hasData){
                     final List<ResponseAssetEntity>? assets = snapshot.data;
-                    print("teste1");
+
                     if(assets != null && assets.isNotEmpty){
-                      print("teste");
+
                       return ListView.builder(
                         itemCount: widget._assets.length,
                         itemBuilder: (context, index) {
