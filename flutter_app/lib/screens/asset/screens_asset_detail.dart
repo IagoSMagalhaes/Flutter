@@ -8,30 +8,31 @@ import 'package:flutter_app/models/transferencia.dart';
 import 'package:flutter_app/router/asset/asset_list_all_router.dart';
 import 'package:flutter_app/screens/asset/screens_asset_form_post.dart';
 
-const _screenAssetListTitle = "Patrimônios";
+const _screenAssetDetailTitle = "Detalhes";
 
-class ScreenAssetList extends StatefulWidget {
+class ScreenAssetDetail extends StatefulWidget {
   List<Asset> _assets = [];
 
   @override
   State<StatefulWidget> createState() {
-    return ScreenAssetListState();
+    return ScreenAssetDetailState();
   }
 }
 
-class ScreenAssetListState extends State<ScreenAssetList> {
+class ScreenAssetDetailState extends State<ScreenAssetDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(_screenAssetListTitle),
+          title: Text(_screenAssetDetailTitle),
         ),
         body: FutureBuilder<List<ResponseAssetEntity>>(
-            initialData: [],
             future: HttpAsset().findAllAssets(),
           //  future: Future.delayed(Duration(seconds: 1)).then((value) => HttpAsset().findAllAssets()),
             builder: (context, snapshot) {
 
+              final List<ResponseAssetEntity>? assets = snapshot.data;
+              print("teste4");
               switch(snapshot.connectionState){
                 case ConnectionState.none:
                   break;
@@ -40,18 +41,18 @@ class ScreenAssetListState extends State<ScreenAssetList> {
                 case ConnectionState.active:
                   break;
                 case ConnectionState.done:
-
+                  print("teste2");
                   if(snapshot.hasData){
                     final List<ResponseAssetEntity>? assets = snapshot.data;
-
+                    print("teste1");
                     if(assets != null && assets.isNotEmpty){
-
+                      print("teste");
                       return ListView.builder(
+                        itemCount: widget._assets.length,
                         itemBuilder: (context, index) {
                           final asset = widget._assets[index];
-                          return AssetItemList(asset: asset, onClick: _navigateToScreenAssetDetail);
+                          return AssetDetail(asset: asset);
                         },
-                        itemCount: widget._assets.length,
                       );
                     }
                   } else {
@@ -63,56 +64,30 @@ class ScreenAssetListState extends State<ScreenAssetList> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            navigatorToAssetFormPost(context).then((newAsset) => _update(newAsset));
-          },
-        ));
-  }
-
-  void _update(Asset asset) {
-    if (asset != null) {
-      setState(() {
-        widget._assets.add(asset);
-      });
-    }
+//            navigatorToAssetFormPost(context).then((newAsset) => _update(newAsset));
+            //},
+          }));
   }
 }
 
 
 
-void _navigateToScreenAssetDetail(context) => _navigateTo(context,  ScreenAssetList());
-
-//Icon _iconScreenAssetDetail() => Icon(Icons.search, color: Colors.white, size: 24.0);
-
-void _navigateTo(context, StatefulWidget statefulWidget) => Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => statefulWidget,
-    ));
 
 
 
 
-
-
-
-// Abstração Item da lista
-class AssetItemList extends StatelessWidget {
+class AssetDetail extends StatelessWidget {
   final Asset asset;
-  final Function onClick;
 
-  const AssetItemList({Key? key, required this.asset, required this.onClick}) : super(key: key);
+  const AssetDetail({Key? key, required this.asset}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print("teste");
     return Card(
         child: ListTile(
-          onTap: () => onClick(),
-      leading: Icon(Icons.monetization_on),
-      title: Text(asset.name.toString()),
-      subtitle: Text(asset.fullValue.toString()),
-    ));
+          leading: Icon(Icons.monetization_on),
+          title: Text(asset.name.toString()),
+          subtitle: Text(asset.fullValue.toString()),
+        ));
   }
 }
-
-
-

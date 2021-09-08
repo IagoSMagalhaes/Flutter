@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/http/asset/http_asset.dart';
+import 'package:flutter_app/http/asset/asset/http_asset.dart';
 import 'package:flutter_app/router/main/asset_router.dart';
-import 'package:flutter_app/screens/asset/screens_asset_form_save.dart';
-import 'package:flutter_app/screens/asset/screens_asset_list_all.dart';
 
 void main() {
   runApp(Boot());
+  //HttpAsset().post([RequestPostAssetEntity("Suzuki 2008", 10000, "Wagner"), RequestPostAssetEntity("Corolla 2008", 20000, "Hugo")]);
   HttpAsset().findAllAssets();
   //Example REQUEST HTTP
   //HttpAsset().findById().then((value) => print(value?.title));
@@ -26,7 +25,7 @@ class Boot extends StatelessWidget {
 
   ThemeData buildTheme() {
     return ThemeData(
-      primaryColor: Colors.green[900],
+      primaryColor: Colors.blue[900],
       accentColor: Colors.blueAccent[700],
       buttonTheme: ButtonThemeData(
         buttonColor: Colors.blueAccent[700],

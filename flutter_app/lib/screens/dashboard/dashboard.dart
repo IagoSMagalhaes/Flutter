@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/asset/screens_asset_form_save.dart';
+import 'package:flutter_app/screens/asset/screens_asset_form_post.dart';
+import 'package:flutter_app/screens/asset/screens_asset_list_all.dart';
+import 'package:flutter_app/screens/owner/screens_owners_list_all.dart';
 
-import '../screens_asset_list_all.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -41,15 +42,23 @@ class Dashboard extends StatelessWidget {
     child: ListView(
       scrollDirection: Axis.horizontal,
         children: [
+          buildOwner(context),
           buildSearch(context),
           buildPost(context)]),
   );
 
-  ItemDashboard buildSearch(context) => ItemDashboard(name: "Buscar",
+
+  ItemDashboard buildOwner(context) => ItemDashboard(name: "Contatos",
+      icon: _iconScreenOwnerList(),
+      onClick: () => _navigateToScreenOwnerList(context));
+
+
+  ItemDashboard buildSearch(context) => ItemDashboard(name: "Buscar Patrimônios",
                                                       icon: _iconScreenAssetList(),
                                                       onClick: () => _navigateToScreenAssetList(context));
 
-  buildPost(context) => ItemDashboard(name: "Novo",
+
+  buildPost(context) => ItemDashboard(name: "Novo Patrimônio",
                                       icon: _iconScreenAssetFormPost(),
                                       onClick: () => _navigateToScreenAssetFormPost(context));
 
@@ -114,14 +123,17 @@ Icon _iconScreenAssetFormPost() => Icon(Icons.add, color: Colors.white, size: 24
 
 Icon _iconScreenAssetList() => Icon(Icons.search, color: Colors.white, size: 24.0);
 
+Icon _iconScreenOwnerList() => Icon(Icons.contact_page, color: Colors.white, size: 24.0);
+
+
 void _navigateToScreenAssetList(context) => _navigateTo(context,  ScreenAssetList());
+
+void _navigateToScreenOwnerList(context) => _navigateTo(context,  ScreenOwnerList());
 
 void _navigateToScreenAssetFormPost(context) => _navigateTo(context,  ScreensAssetForm());
 
-void _navigateTo(context, StatefulWidget statefulWidget) => Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => statefulWidget,
-    ));
+void _navigateTo(context, StatefulWidget statefulWidget) =>
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => statefulWidget));
 
 
 

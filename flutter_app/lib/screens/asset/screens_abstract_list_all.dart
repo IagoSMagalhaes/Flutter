@@ -2,9 +2,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/asset.dart';
+import 'package:flutter_app/models/asset/asset.dart';
 import 'package:flutter_app/models/transferencia.dart';
-import 'package:flutter_app/screens/asset/screens_asset_form_save.dart';
+import 'package:flutter_app/screens/asset/screens_asset_form_post.dart';
 import 'package:flutter_app/screens/asset/screens_asset_list_all.dart';
 /*
 

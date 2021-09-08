@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/editor.dart';
 import 'package:flutter_app/components/field_input.dart';
-import 'package:flutter_app/models/asset.dart';
+import 'package:flutter_app/http/asset/asset/http_asset.dart';
+import 'package:flutter_app/models/asset/asset.dart';
 import 'package:flutter_app/models/transferencia.dart';
+import 'package:flutter_app/screens/asset/screens_asset_list_all.dart';
 
 const _titulo = "Criar patrimônio";
 
@@ -32,7 +34,7 @@ const _fieldHintAssetManager = "Ex: Hugo";
 //const _fieldHintAssetAddressCity = "SP";
 //const _fieldHintAssetAddressState = "";
 
-const _textoBotao = "Confirmar";
+const _textButton = "Confirmar";
 
 class ScreensAssetForm extends StatefulWidget {
   @override
@@ -83,8 +85,6 @@ class ScreensAssetFormState extends State<ScreensAssetForm> {
   void _saveAsset(BuildContext context) {
     //TODO - TRANSFORMAR STRING PRA ENUM
 
-    debugPrint(_controllerFieldAssetFullValue.text);
-
     if (_controllerFieldAssetName.value != null) {
       Asset asset = Asset(
           name: _controllerFieldAssetName.text,
@@ -94,9 +94,19 @@ class ScreensAssetFormState extends State<ScreensAssetForm> {
           manager: _controllerFieldAssetManager.text);
 
       if (asset.name != null) {
+        final double? valor = double.tryParse(_controllerFieldAssetFullValue.text);
+
+        List<RequestPostAssetEntity> body = [RequestPostAssetEntity(_controllerFieldAssetName.text, valor, _controllerFieldAssetManager.text)];
+
+        HttpAsset().post(body);
+
         Navigator.pop(context, asset);
+
+
       }
     }
+
+
 
 /*
     Asset asset = Asset(
@@ -113,6 +123,13 @@ class ScreensAssetFormState extends State<ScreensAssetForm> {
  */
   }
 
+  void _showScreenAssetListAll(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ScreenAssetList(),
+      ),
+    );
+  }
 
   FieldInput buildInputName() {
     return FieldInput(
@@ -155,8 +172,8 @@ class ScreensAssetFormState extends State<ScreensAssetForm> {
     );
   }
 
-  ElevatedButton buildInputSend() {
-    return ElevatedButton(
-        onPressed: () => _saveAsset(context), child: Text(_textoBotao));
-  }
+  ElevatedButton buildInputSend()  =>
+      ElevatedButton(onPressed: () => _saveAsset(context),
+                     child: Text(_textButton));
+
 }

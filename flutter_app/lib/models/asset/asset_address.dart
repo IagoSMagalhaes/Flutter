@@ -1,6 +1,6 @@
 
 
-import 'package:flutter_app/models/asset.dart';
+import 'package:flutter_app/models/asset/asset.dart';
 
 class AssetAddress {
   late final Asset asset;
