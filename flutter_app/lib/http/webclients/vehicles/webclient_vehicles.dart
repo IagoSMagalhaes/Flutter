@@ -10,7 +10,7 @@ import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 
-class HttpVehicles {
+class WebClientVehicles {
 
   final String postsURL = "https://jsonplaceholder.typicode.com/todos";
   final String localhostVehiclesBaseUrl = "http://localhost:8081/vehicle/v1";

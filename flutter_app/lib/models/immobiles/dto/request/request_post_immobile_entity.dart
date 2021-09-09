@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-class RequestPostAssetEntity {
+class RequestPostImmobileEntity {
 
   final String? name;
   final String? type;
@@ -10,11 +10,11 @@ class RequestPostAssetEntity {
   final String? manager;
 
 
-  RequestPostAssetEntity(this.name, this.type, this.fullValue, this.manager);
+  RequestPostImmobileEntity(this.name, this.type, this.fullValue, this.manager);
 
-  factory RequestPostAssetEntity.fromJson(Map<String, dynamic> json) {
+  factory RequestPostImmobileEntity.fromJson(Map<String, dynamic> json) {
 
-    return RequestPostAssetEntity(
+    return RequestPostImmobileEntity(
         json['name'],
         json['type'],
         json['fullValue'],
@@ -22,14 +22,13 @@ class RequestPostAssetEntity {
   }
 
   String toJson() {
-    final Map<String, dynamic> assetMap = {
+    final Map<String, dynamic> map = {
       'name': name,
       'type': type,
       'fullValue': fullValue,
       'manager': manager};
 
-
-    return jsonEncode(assetMap);
+    return jsonEncode(map);
   }
 
 

@@ -1,14 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_app/components/message/centered_message.dart';
-import 'package:flutter_app/components/loading/progress.dart';
 import 'package:flutter_app/components/screen/abstract_screen.dart';
-import 'package:flutter_app/http/asset/asset/http_asset.dart';
-import 'package:flutter_app/http/helper/helper/http_helper.dart';
-import 'package:flutter_app/models/asset/domain/asset.dart';
-import 'package:flutter_app/models/owner/domain/owner.dart';
-import 'package:flutter_app/models/transferencia.dart';
-import 'package:flutter_app/router/asset/asset_list_all_router.dart';
+import 'package:flutter_app/http/webclients/asset/asset/webclient_asset.dart';
 import 'package:flutter_app/screens/asset/screens_asset_form_post.dart';
 
 
@@ -24,7 +16,7 @@ class ScreenAssetListAllStatefulAbstract extends ScreenAbstractListAll {
 class ScreenAssetListAllStateAbstract extends AbstractScreenStateListAll {
 
   @override
-  Future<List<AbstractResponse>> future = HttpAsset().findAllAssets();
+  Future<List<AbstractResponse>> future = WebClientAsset().findAllAssets();
 
   @override
   get title => "Patrimônios";

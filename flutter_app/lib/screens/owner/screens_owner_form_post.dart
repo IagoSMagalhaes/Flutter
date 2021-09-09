@@ -1,10 +1,11 @@
 // Criando formulario
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/components/auth/asset_auth_dialog.dart';
 import 'package:flutter_app/components/field/field_input.dart';
-import 'package:flutter_app/http/asset/owner/http_owner.dart';
-import 'package:flutter_app/models/owner/dto/request/request_post_owner.dart';
+import 'package:flutter_app/http/webclients/asset/owner/webclient_owner.dart';
 import 'package:flutter_app/models/owner/domain/owner.dart';
+import 'package:flutter_app/models/owner/dto/request/request_post_owner.dart';
 
 const _titulo = "Criar Contato";
 
@@ -64,7 +65,13 @@ class ScreensOwnerFormState extends State<ScreensOwnerForm> {
   }
 
   ElevatedButton buildInputSend()  =>
-      ElevatedButton(onPressed: () => _saveOwner(context),
+      ElevatedButton(onPressed: () => showDialog(context: context, builder: (context){
+        return AuthDialog(onConfirm: (String password) {
+          print(password);
+
+        },);
+      }),
+      //ElevatedButton(onPressed: () => _saveOwner(context),
                      child: Text(_textButton));
 
 
@@ -79,11 +86,9 @@ class ScreensOwnerFormState extends State<ScreensOwnerForm> {
 
       if (ownerSave.name != null) {
         //Fazer em uma linha só
-        List<RequestPostOwnerEntity> body = [
-          RequestPostOwnerEntity(ownerSave.name, ownerSave.cellphone)
-        ];
+        List<RequestPostOwnerEntity> body = [RequestPostOwnerEntity(ownerSave.name, ownerSave.cellphone)];
 
-        HttpOwner().post(body).then((value) =>
+        WebClientOwner().post(body).then((value) =>
             Navigator.pop(context, ownerSave));
       }
     }

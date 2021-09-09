@@ -1,7 +1,8 @@
 import 'package:flutter_app/components/message/centered_message.dart';
 import 'package:flutter_app/components/screen/abstract_screen.dart';
-import 'package:flutter_app/http/immobile/http_immobile.dart';
+import 'package:flutter_app/http/webclients/immobile/webclient_immobile.dart';
 import 'package:flutter_app/screens/asset/screens_asset_form_post.dart';
+import 'package:flutter_app/screens/immobile/screens_immobile_form_post.dart';
 
 
 
@@ -14,13 +15,13 @@ class ScreenImmobileListAllStatefulAbstract extends ScreenAbstractListAll {
 class ScreenImmobileListAllStateAbstract extends AbstractScreenStateListAll {
 
   @override
-  Future<List<AbstractResponse>> future = HttpImmobile().findAll();
+  Future<List<AbstractResponse>> future = WebClientImmobile().findAll();
 
   @override
   get title => "Imóveis";
 
   @override
-  get navigateScreenButton => ScreensAssetForm();
+  get navigateScreenButton => ScreensImmobileForm();
 
   @override
   get centeredMessageWhenIsEmpty => CenteredMessageFactory().immobileIsEmpty();

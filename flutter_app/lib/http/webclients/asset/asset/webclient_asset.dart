@@ -9,7 +9,7 @@ import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 
-class HttpAsset {
+class WebClientAsset {
 
   final String postsURL = "https://jsonplaceholder.typicode.com/todos";
   final String localhostAssetBaseUrl = "http://localhost:8081/v1";
@@ -87,15 +87,11 @@ class HttpAsset {
 
 Future<void> post(List<RequestPostAssetEntity> assets) async {
 
+    throw Exception("teste");
+
     assets.forEach((asset) async {
 
-      final Map<String, dynamic> assetMap = {
-        'name': asset.name,
-        'type': asset.type,
-        'fullValue': asset.fullValue,
-        'manager': asset.manager};
-
-      final String assetJson = jsonEncode(assetMap);
+      final String assetJson = asset.toJson();
 
       final httpResponse = await client.post(Uri.parse(localhostAssetBaseUrl),
                                               headers: { 'Content-type': 'application/json',

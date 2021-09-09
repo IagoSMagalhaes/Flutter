@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/http/asset/asset/http_asset.dart';
-import 'package:flutter_app/http/asset/owner/http_owner.dart';
 import 'package:flutter_app/router/main/asset_router.dart';
 
-import 'models/owner/domain/owner.dart';
+import 'http/webclients/asset/asset/webclient_asset.dart';
 
 void main() {
   runApp(Boot());
   //HttpAsset().post([RequestPostAssetEntity("Suzuki 2008", 10000, "Wagner"), RequestPostAssetEntity("Corolla 2008", 20000, "Hugo")]);
   //HttpOwner().post([RequestPostOwnerEntity("Ivan", "00 11 2213 - 1231"), RequestPostOwnerEntity("Hugo", "00 11 2213 - 1231")]);
-  HttpAsset().findAllAssets();
+  WebClientAsset().findAllAssets();
   //Example REQUEST HTTP
   //HttpAsset().findById().then((value) => print(value?.title));
 }

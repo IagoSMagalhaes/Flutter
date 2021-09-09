@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/field/field_input.dart';
-import 'package:flutter_app/http/asset/asset/http_asset.dart';
+import 'package:flutter_app/http/webclients/asset/asset/webclient_asset.dart';
 import 'package:flutter_app/models/asset/domain/asset.dart';
 import 'package:flutter_app/models/asset/dto/request/request_post_asset_entity.dart';
 
@@ -98,7 +98,7 @@ class ScreensAssetFormState extends State<ScreensAssetForm> {
 
         List<RequestPostAssetEntity> body = [RequestPostAssetEntity(_controllerFieldAssetName.text, type, valor, _controllerFieldAssetManager.text)];
 
-        HttpAsset().post(body);
+        WebClientAsset().post(body);
 
         Navigator.pop(context, asset);
 

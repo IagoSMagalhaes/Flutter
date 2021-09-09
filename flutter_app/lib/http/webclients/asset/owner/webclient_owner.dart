@@ -9,7 +9,7 @@ import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 
-class HttpOwner {
+class WebClientOwner {
 
   final String postsURL = "https://jsonplaceholder.typicode.com/todos";
   final String localhostAssetBaseUrl = "http://localhost:8081/owner/v1";
