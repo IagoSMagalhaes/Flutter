@@ -33,6 +33,8 @@ abstract class AbstractScreenStateListAll extends State<ScreenAbstractListAll> {
 
   abstract StatefulWidget navigateScreenButton;
 
+  abstract CenteredMessage centeredMessageWhenIsEmpty;
+
 
   final httpHelper = HttpHelper();
   final centeredMessageFactory = CenteredMessageFactory();
@@ -71,20 +73,18 @@ abstract class AbstractScreenStateListAll extends State<ScreenAbstractListAll> {
           case ConnectionState.active:
             break;
           case ConnectionState.done:
-            print("20");
+
             if(httpHelper.existData(snapshot)){
               return ListView.builder(
 
                   itemBuilder: (context, index) {
-
-                    print("1");
                     AbstractResponse data = snapshot.data![index];
-                    print("2");
+
                     return data.toItem();
                     },
                   itemCount: snapshot.data?.length);
             } else {
-              return centeredMessageFactory.ownerIsEmpty();
+              return centeredMessageWhenIsEmpty;
             }
         }
 

@@ -33,6 +33,9 @@ class ScreenAssetListAllStateAbstract extends AbstractScreenStateListAll {
   get navigateScreenButton => ScreensAssetForm();
 
   @override
+  get centeredMessageWhenIsEmpty => CenteredMessageFactory().assetIsEmpty();
+
+  @override
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 
 }

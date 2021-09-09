@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/components/message/centered_message.dart';
 import 'package:flutter_app/components/screen/abstract_screen.dart';
 import 'package:flutter_app/http/asset/owner/http_owner.dart';
 import 'package:flutter_app/models/owner/domain/owner.dart';
@@ -22,6 +23,9 @@ class ScreenOwnerListAllStateAbstract extends AbstractScreenStateListAll {
 
   @override
   get navigateScreenButton => ScreensOwnerForm();
+
+  @override
+  get centeredMessageWhenIsEmpty => CenteredMessageFactory().ownerIsEmpty();
 
   @override
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);

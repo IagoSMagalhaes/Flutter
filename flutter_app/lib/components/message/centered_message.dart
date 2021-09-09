@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 const _screenOwnerIsEmpty = "Não existe contados cadastrados";
 const _screenAssetIsEmpty = "Não existe patrimônios cadastrados";
+const _screenVehicleIsEmpty = "Não existe veículos cadastrados";
+const _screenImmobileIsEmpty = "Não existe imóveis cadastrados";
 const _unknowError = "Erro desconhecido";
 
 
@@ -58,6 +60,10 @@ class CenteredMessageFactory {
       CenteredMessage(_screenAssetIsEmpty, icon: Icons.warning);
 
   CenteredMessage unknowError() => CenteredMessage(_unknowError);
+
+  vehicleIsEmpty()  => CenteredMessage(_screenVehicleIsEmpty, icon: Icons.warning);
+
+  immobileIsEmpty()  => CenteredMessage(_screenImmobileIsEmpty, icon: Icons.warning);
 
 
 }

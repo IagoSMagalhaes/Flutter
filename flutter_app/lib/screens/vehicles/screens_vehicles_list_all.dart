@@ -1,3 +1,4 @@
+import 'package:flutter_app/components/message/centered_message.dart';
 import 'package:flutter_app/components/screen/abstract_screen.dart';
 import 'package:flutter_app/http/vehicles/http_vehicles.dart';
 import 'package:flutter_app/screens/asset/screens_asset_form_post.dart';
@@ -20,6 +21,9 @@ class ScreenVehiclesListAllStateAbstract extends AbstractScreenStateListAll {
 
   @override
   get navigateScreenButton => ScreensAssetForm();
+
+  @override
+  get centeredMessageWhenIsEmpty => CenteredMessageFactory().vehicleIsEmpty();
 
   @override
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
