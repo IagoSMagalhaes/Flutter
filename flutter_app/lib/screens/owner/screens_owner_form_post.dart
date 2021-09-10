@@ -126,12 +126,20 @@ class ScreenOwnerFormState extends State<ScreenOwnerForm> {
      */
 
     WebClientOwner().post(body, password, context)
-                      .catchError((e) {FailureDialog(e.toString()).showDialogError(context, e);
+                      .catchError((e) {
+                        print("cai aqui");
+                        FailureDialog(e.toString()).showDialogError(context, e);
                           }, test: (e) => e is HttpException)
-                      .catchError((e) {FailureDialog(e.toString()).showDialogError(context, e);
+                      .catchError((e) {
+                        print("cai aqui 2");
+                        FailureDialog(e.toString()).showDialogError(context, e);
                           }, test: (e) => e is TimeoutException)
-                      .catchError((e) {FailureDialog(e.toString()).showUnknowError(context);})
-                  .then((value) => SuccessDialog(_textSuccessPost).showDialogSuccess(context));
+                      .catchError((e) {
+                        print("cai aqui 3");
+                        FailureDialog(e.toString()).showUnknowError(context);})
+                  .then((value) =>
+        SuccessDialog(_textSuccessPost).showDialogSuccess(context)
+    );
 
     print("10");
 

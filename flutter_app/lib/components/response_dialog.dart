@@ -100,7 +100,7 @@ class FailureDialog extends StatelessWidget {
 
   FailureDialog(
     this.message, {
-    this.title = 'Failure',
+    this.title = 'Erro',
     this.icon = Icons.warning,
   });
 
@@ -117,6 +117,12 @@ class FailureDialog extends StatelessWidget {
   void showDialogError(BuildContext context, exception) {
     showDialog(context: context, builder: (contextDialog) {
       return FailureDialog(exception.toString());
+    });
+  }
+
+  void showDialogErrorMessage(BuildContext context) {
+    showDialog(context: context, builder: (contextDialog) {
+      return FailureDialog(message);
     });
   }
 

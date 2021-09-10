@@ -17,6 +17,7 @@ import 'package:http_interceptor/http_interceptor.dart';
 class WebClientOwner extends AbstractWebClient {
 
   final _urlOwner = "owner/v1";
+  final _messageExceptionPost = "owner/v1";
 
   Future<List<ResponseOwnerEntity>> findAll() async {
     final httpResponse = await client.get(Uri.parse(localhostBaseUrl + _urlOwner))
@@ -62,10 +63,13 @@ class WebClientOwner extends AbstractWebClient {
       if(httpResponse.statusCode == 200){
         return;
       } else {
-        print("genericThrowHttpError");
-       genericThrowHttpError(httpResponse.statusCode);
-      }
+        
+        ApiError apiError = ApiError.fromJson(json.decode(httpResponse.body));
 
+        FailureDialog(apiError.message!).showDialogErrorMessage(context);
+
+        // genericThrowHttpError(httpResponse.statusCode);
+      }
     });
   }
 }
