@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/loading/progress.dart';
 import 'package:flutter_app/components/message/centered_message.dart';
-import 'package:flutter_app/http/helper/helper/http_helper.dart';
+import 'package:flutter_app/http/helper/helper/webclient_helper.dart';
 import 'package:flutter_app/http/webclients/asset/asset/webclient_asset.dart';
 import 'package:flutter_app/models/asset/domain/asset.dart';
 import 'package:flutter_app/models/asset/dto/response/response_get_asset_entity.dart';
@@ -40,7 +40,7 @@ class ScreenAssetDetailState extends State<ScreenAssetDetail> {
                   break;
                 case ConnectionState.done:
 
-                  HttpHelper httpHelper = HttpHelper();
+                  WebClientHelper httpHelper = WebClientHelper();
 
                   if(httpHelper.existData(snapshot)){
                     return ListView.builder(

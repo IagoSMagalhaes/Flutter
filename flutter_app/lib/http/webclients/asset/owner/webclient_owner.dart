@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter_app/http/helper/helper/abstract_webclient.dart';
+import 'package:flutter_app/http/helper/helper/webclient_helper.dart';
 import 'package:flutter_app/http/helper/interceptor/http_interceptor.dart';
 import 'package:flutter_app/models/owner/dto/request/request_post_owner.dart';
 import 'package:flutter_app/models/owner/dto/response/response_get_owner_entity.dart';
@@ -9,15 +11,12 @@ import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 
-class WebClientOwner {
+class WebClientOwner extends AbstractWebClient {
 
-  final String postsURL = "https://jsonplaceholder.typicode.com/todos";
-  final String localhostAssetBaseUrl = "http://localhost:8081/owner/v1";
-  Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
-
+  final _urlOwner = "owner/v1";
 
   Future<List<ResponseOwnerEntity>> findAll() async {
-    final httpResponse = await client.get(Uri.parse(localhostAssetBaseUrl))
+    final httpResponse = await client.get(Uri.parse(localhostBaseUrl + _urlOwner))
         .timeout(Duration(seconds: 15));
     List<ResponseOwnerEntity> responseMethod = [];
 
@@ -32,32 +31,29 @@ class WebClientOwner {
 
       responseMethod = assets;
 
-      print(responseMethod.first.name);
-
       return responseMethod;
     } else {
       return [];
     }
   }
 
-
-  Future<void> post(List<RequestPostOwnerEntity> assets) async {
+  Future<ResponseOwnerEntity?> post(List<RequestPostOwnerEntity> assets, String password) async {
 
     assets.forEach((asset) async {
 
-      final Map<String, dynamic> assetMap = {'name': asset.name, 'cellphone': asset.cellphone};
+      final String body = asset.toJson();
 
-      final String body = jsonEncode(assetMap);
-
-      final httpResponse = await client.post(Uri.parse(localhostAssetBaseUrl),
-          headers: { 'Content-type': 'application/json',
-                     'Authorization': 'bearer UAHSUQHWEN,MANSD,'},
-          body: body)
+      final httpResponse = await client.post(Uri.parse(localhostBaseUrl + _urlOwner),
+                                        headers:  buildHeader(password),
+                                        body: body)
                                       .timeout(Duration(seconds: 15));
 
       if(httpResponse.statusCode == 200){
-        //print("OK OWNER POST");
+        return;
+      } else {
+       genericThrowHttpError(httpResponse.statusCode);
       }
+
     });
   }
 }

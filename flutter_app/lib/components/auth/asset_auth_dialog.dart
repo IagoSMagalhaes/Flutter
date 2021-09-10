@@ -9,8 +9,6 @@ class AuthDialog extends StatefulWidget {
 
   AuthDialog({required this.onConfirm});
 
-
-
   @override
   State<AuthDialog> createState() => _AuthDialogState();
 }
@@ -49,5 +47,5 @@ class _AuthDialogState extends State<AuthDialog> {
     Navigator.pop(context);
     }, child: Text("Confirmar"),);
 
-  FlatButton buildButtonCancel() => FlatButton(onPressed: () {print("Cancelar");}, child: Text("Cancelar"),);
+  FlatButton buildButtonCancel() => FlatButton(onPressed: () => Navigator.pop(context), child: Text("Cancelar"),);
 }

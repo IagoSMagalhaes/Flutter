@@ -1,5 +1,6 @@
 
-import 'package:flutter_app/components/screen/abstract_screen.dart';
+import 'package:flutter_app/components/screen/abstract_screen_list_all.dart';
+import 'package:flutter_app/models/owner/dto/request/request_post_owner.dart';
 
 class Owner extends AbstractDomain {
 
@@ -13,5 +14,10 @@ class Owner extends AbstractDomain {
     this.name,
     this.cellphone,
   ) : super();
+
+  List<RequestPostOwnerEntity> toPost()  =>
+      [RequestPostOwnerEntity(name, cellphone)];
+
+
 
 }

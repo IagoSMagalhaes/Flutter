@@ -1,5 +1,5 @@
 import 'package:flutter_app/components/message/centered_message.dart';
-import 'package:flutter_app/components/screen/abstract_screen.dart';
+import 'package:flutter_app/components/screen/abstract_screen_list_all.dart';
 import 'package:flutter_app/http/webclients/immobile/webclient_immobile.dart';
 import 'package:flutter_app/screens/asset/screens_asset_form_post.dart';
 import 'package:flutter_app/screens/immobile/screens_immobile_form_post.dart';
@@ -21,7 +21,7 @@ class ScreenImmobileListAllStateAbstract extends AbstractScreenStateListAll {
   get title => "Imóveis";
 
   @override
-  get navigateScreenButton => ScreensImmobileForm();
+  get navigateScreenButton => ScreenImmobileForm();
 
   @override
   get centeredMessageWhenIsEmpty => CenteredMessageFactory().immobileIsEmpty();

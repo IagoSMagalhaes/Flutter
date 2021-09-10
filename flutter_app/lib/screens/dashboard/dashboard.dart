@@ -1,13 +1,12 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/asset/screens_asset_form_post.dart';
-import 'package:flutter_app/screens/asset/screens_asset_list_all.dart';
-import 'package:flutter_app/screens/immobile/screens_immobile_list_all.dart';
-import 'package:flutter_app/screens/owner/screens_owners_list_all.dart';
-import 'package:flutter_app/screens/vehicles/screens_vehicles_list_all.dart';
+import 'package:flutter_app/router/factory/router_factory.dart';
 
 
 class Dashboard extends StatelessWidget {
+
+  final RouterFactory _routerFactory = RouterFactory();
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -55,26 +54,27 @@ class Dashboard extends StatelessWidget {
 
   buildOwner(context) => ItemDashboard(name: "Contatos",
       icon: _iconScreenOwnerList(),
-      onClick: () => _navigateToScreenOwnerList(context));
+      onClick: () => _routerFactory.navigateToScreenOwnerList(context));
 
 
   buildSearch(context) => ItemDashboard(name: "Buscar Patrimônios",
                                                       icon: _iconScreenAssetList(),
-                                                      onClick: () => _navigateToScreenAssetList(context));
+                                                      onClick: () => _routerFactory.navigateToScreenAssetList(context));
 
 
   buildPost(context) => ItemDashboard(name: "Novo Patrimônio",
                                       icon: _iconScreenAssetFormPost(),
-                                      onClick: () => _navigateToScreenAssetFormPost(context));
+                                      onClick: () => _routerFactory.navigateToScreenAssetFormPost(context));
+
 
   buildImmobile(context) => ItemDashboard(name: "Imóveis",
       icon: _iconScreenImmobileList(),
-      onClick: () => _navigateToScreenImmobileList(context));
+      onClick: () => _routerFactory.navigateToScreenImmobileList(context));
 
 
   buildVehicles(context) => ItemDashboard(name: "Veículos",
       icon: _iconScreenVehiclesList(),
-      onClick: () => _navigateToScreenVehiclesList(context));
+      onClick: () => _routerFactory.navigateToScreenVehicleList(context));
 
 }
 
@@ -139,20 +139,6 @@ Icon _iconScreenOwnerList() => Icon(Icons.contact_page, color: Colors.white, siz
 Icon _iconScreenVehiclesList() => Icon(Icons.car_repair, color: Colors.white, size: 24.0);
 
 Icon _iconScreenImmobileList() => Icon(Icons.home, color: Colors.white, size: 24.0);
-
-
-void _navigateToScreenAssetList(context) => _navigateTo(context,  ScreenAssetListAllStatefulAbstract());
-//void _navigateToScreenOwnerList(context) => _navigateTo(context,  ScreenOwnerList());
-
-void _navigateToScreenOwnerList(context) => _navigateTo(context,  ScreenOwnerListAllStatefulAbstract());
-
-void _navigateToScreenVehiclesList(context) => _navigateTo(context,  ScreenVehiclesListAllStatefulAbstract());
-void _navigateToScreenImmobileList(context) => _navigateTo(context,  ScreenImmobileListAllStatefulAbstract());
-void _navigateToScreenAssetFormPost(context) => _navigateTo(context,  ScreensAssetForm());
-
-void _navigateTo(context, StatefulWidget statefulWidget) =>
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => statefulWidget));
-
 
 
 

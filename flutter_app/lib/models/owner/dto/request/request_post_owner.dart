@@ -3,6 +3,8 @@
 
 
 
+import 'dart:convert';
+
 class RequestPostOwnerEntity {
 
   final String? name;
@@ -16,6 +18,13 @@ class RequestPostOwnerEntity {
     return RequestPostOwnerEntity(
         json['name'],
         json['cellphone']);
+  }
+
+  String toJson() {
+
+    final Map<String, dynamic> assetMap = {'name': name, 'cellphone': cellphone};
+
+    return jsonEncode(assetMap);
   }
 
 

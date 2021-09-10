@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/components/screen/abstract_screen.dart';
+import 'package:flutter_app/components/screen/abstract_screen_list_all.dart';
 import 'package:flutter_app/models/asset/domain/asset.dart';
 
 class ResponseGetVehicleEntity extends AbstractResponse{

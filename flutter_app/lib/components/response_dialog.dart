@@ -70,7 +70,7 @@ class SuccessDialog extends StatelessWidget {
 
   SuccessDialog(
     this.message, {
-    this.title = 'Success',
+    this.title = 'Sucesso!',
     this.icon = Icons.done,
   });
 
@@ -82,6 +82,14 @@ class SuccessDialog extends StatelessWidget {
       icon: icon,
       colorIcon: Colors.green,
     );
+  }
+
+  Future<void> showDialogSuccess(BuildContext context) async {
+    await showDialog(
+        context: context,
+        builder: (contextDialog) {
+          return SuccessDialog(message);
+        }).then((value) => Navigator.pop(context));
   }
 }
 
@@ -104,5 +112,11 @@ class FailureDialog extends StatelessWidget {
       icon: icon,
       colorIcon: Colors.red,
     );
+  }
+
+  void showDialogError(BuildContext context, exception) {
+    showDialog(context: context, builder: (contextDialog) {
+      return FailureDialog(exception.toString());
+    });
   }
 }

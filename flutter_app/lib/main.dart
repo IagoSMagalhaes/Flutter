@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/router/main/asset_router.dart';
+import 'package:flutter_app/router/main/router_asset_config.dart';
 
 import 'http/webclients/asset/asset/webclient_asset.dart';
 
@@ -20,7 +20,7 @@ class Boot extends StatelessWidget {
     return MaterialApp(
         theme: buildTheme(),
         initialRoute: "/home",
-        routes: AssetRouter().getRoutes());
+        routes: RouterAssetConfig().getRoutes());
   }
 
 

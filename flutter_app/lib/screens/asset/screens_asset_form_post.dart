@@ -34,14 +34,14 @@ const _fieldHintAssetManager = "Ex: Hugo";
 
 const _textButton = "Confirmar";
 
-class ScreensAssetForm extends StatefulWidget {
+class ScreenAssetForm extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return ScreensAssetFormState();
+    return ScreenAssetFormState();
   }
 }
 
-class ScreensAssetFormState extends State<ScreensAssetForm> {
+class ScreenAssetFormState extends State<ScreenAssetForm> {
   final TextEditingController _controllerFieldAssetName =
       TextEditingController();
   final TextEditingController _controllerFieldAssetType =
@@ -80,7 +80,7 @@ class ScreensAssetFormState extends State<ScreensAssetForm> {
     );
   }
 
-  void _saveAsset(BuildContext context) {
+  void _saveAsset(BuildContext context, String password) {
     //TODO - TRANSFORMAR STRING PRA ENUM
 
     if (_controllerFieldAssetName.value != null) {
@@ -98,11 +98,9 @@ class ScreensAssetFormState extends State<ScreensAssetForm> {
 
         List<RequestPostAssetEntity> body = [RequestPostAssetEntity(_controllerFieldAssetName.text, type, valor, _controllerFieldAssetManager.text)];
 
-        WebClientAsset().post(body);
-
-        Navigator.pop(context, asset);
-
-
+        WebClientAsset().post(body, password).then((value) =>
+            Navigator.pop(context, asset)
+        );
       }
     }
 
@@ -166,7 +164,7 @@ class ScreensAssetFormState extends State<ScreensAssetForm> {
   }
 
   ElevatedButton buildInputSend()  =>
-      ElevatedButton(onPressed: () => _saveAsset(context),
+      ElevatedButton(onPressed: () => _saveAsset(context, "password"),
                      child: Text(_textButton));
 
 }

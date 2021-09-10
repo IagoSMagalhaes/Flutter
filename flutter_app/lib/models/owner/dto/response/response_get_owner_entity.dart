@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/components/screen/abstract_screen.dart';
+import 'package:flutter_app/components/screen/abstract_screen_list_all.dart';
 import 'package:flutter_app/models/owner/domain/owner.dart';
 import 'package:flutter_app/screens/owner/screens_owners_list_all.dart';
 

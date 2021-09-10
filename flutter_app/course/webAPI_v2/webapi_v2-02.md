@@ -1,4 +1,5 @@
 O que aprendemos nesta aula:
 
-Implementar um dialog;
-Evitar o problema de envio de BuildContext diferentes.
+Capturar erros ao executar o Future;
+Identificar exceptions lançadas no Future;
+Apresentar a mensagem adequada de acordo com a resposta da requisição.

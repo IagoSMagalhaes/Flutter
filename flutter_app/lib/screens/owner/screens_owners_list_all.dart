@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/message/centered_message.dart';
-import 'package:flutter_app/components/screen/abstract_screen.dart';
+import 'package:flutter_app/components/screen/abstract_screen_list_all.dart';
 import 'package:flutter_app/http/webclients/asset/owner/webclient_owner.dart';
 import 'package:flutter_app/models/owner/domain/owner.dart';
+import 'package:flutter_app/models/owner/dto/response/response_get_owner_entity.dart';
 import 'package:flutter_app/screens/owner/screens_owner_form_post.dart';
 
 
@@ -22,7 +23,7 @@ class ScreenOwnerListAllStateAbstract extends AbstractScreenStateListAll {
   get title => "Contatos";
 
   @override
-  get navigateScreenButton => ScreensOwnerForm();
+  get navigateScreenButton => ScreenOwnerForm();
 
   @override
   get centeredMessageWhenIsEmpty => CenteredMessageFactory().ownerIsEmpty();

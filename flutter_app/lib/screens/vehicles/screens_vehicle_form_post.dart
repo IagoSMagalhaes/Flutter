@@ -6,55 +6,55 @@ import 'package:flutter_app/components/field/field_input.dart';
 import 'package:flutter_app/components/response_dialog.dart';
 import 'package:flutter_app/http/webclients/asset/asset/webclient_asset.dart';
 import 'package:flutter_app/models/asset/dto/request/request_post_asset_entity.dart';
-import 'package:flutter_app/models/immobile/domain/immobiles.dart';
+import 'package:flutter_app/models/vehicle/domain/vehicles.dart';
 import 'package:flutter_app/router/factory/router_factory.dart';
 
-const _titulo = "Criar Imóvel";
-const _textSuccessPost = "Imóvel cadastrado com sucesso";
+const _titulo = "Criar Veículo";
+const _textSuccessPost = "Veículo cadastrado com sucesso";
 
-const _fieldTextImmobileName = "Nome do patrimonio";
-const _fieldTextImmobileType = "Tipo do patrimônio";
-const _fieldTextImmobileOperationType = "Tipo de operação";
-const _fieldTextImmobileFullValue = "Valor Total";
-const _fieldTextImmobileManager = "Responsável pelo Patrimonio";
+const _fieldTextVehicleName = "Nome do patrimonio";
+const _fieldTextVehicleType = "Tipo do patrimônio";
+const _fieldTextVehicleOperationType = "Tipo de operação";
+const _fieldTextVehicleFullValue = "Valor Total";
+const _fieldTextVehicleManager = "Responsável pelo Patrimonio";
 
 
-const _fieldTextImmobileAddressStreet = "Rua";
-const _fieldTextImmobileAddressDistrict = "Bairro";
-const _fieldTextImmobileAddressCity = "Cidade";
-const _fieldTextImmobileAddressState = "Estado";
+const _fieldTextVehicleAddressStreet = "Rua";
+const _fieldTextVehicleAddressDistrict = "Bairro";
+const _fieldTextVehicleAddressCity = "Cidade";
+const _fieldTextVehicleAddressState = "Estado";
 
-const _fieldHintImmobileName = "Ex: Corolla 2018";
-const _fieldHintImmobileType = "Ex: Veicúlo, Imóvel, Ações";
-const _fieldHintImmobileOperationType = "Ex: Compra, Venda";
-const _fieldHintImmobileFullValue = "0.00";
-const _fieldHintImmobileManager = "Ex: Hugo";
+const _fieldHintVehicleName = "Ex: Corolla 2018";
+const _fieldHintVehicleType = "Ex: Veicúlo, Veículo, Ações";
+const _fieldHintVehicleOperationType = "Ex: Compra, Venda";
+const _fieldHintVehicleFullValue = "0.00";
+const _fieldHintVehicleManager = "Ex: Hugo";
 
 
 
 const _textButton = "Confirmar";
 
-class ScreenImmobileForm extends StatefulWidget {
+class ScreenVehicleForm extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return ScreenImmobileFormState();
+    return ScreenVehicleFormState();
   }
 }
 
-class ScreenImmobileFormState extends State<ScreenImmobileForm> {
+class ScreenVehicleFormState extends State<ScreenVehicleForm> {
 
   final RouterFactory _routerFactory = RouterFactory();
 
 
-  final TextEditingController _controllerFieldImmobileName =
+  final TextEditingController _controllerFieldVehicleName =
       TextEditingController();
-  //final TextEditingController _controllerFieldImmobileType =
+  //final TextEditingController _controllerFieldVehicleType =
 //      TextEditingController();
-  final TextEditingController _controllerFieldImmobileOperationType =
+  final TextEditingController _controllerFieldVehicleOperationType =
       TextEditingController();
-  final TextEditingController _controllerFieldImmobileFullValue =
+  final TextEditingController _controllerFieldVehicleFullValue =
       TextEditingController();
-  final TextEditingController _controllerFieldImmobileManager =
+  final TextEditingController _controllerFieldVehicleManager =
       TextEditingController();
 
 
@@ -83,35 +83,35 @@ class ScreenImmobileFormState extends State<ScreenImmobileForm> {
 
   FieldInput buildInputName() {
     return FieldInput(
-      controller: _controllerFieldImmobileName,
-      text: _fieldTextImmobileName,
-      hint: _fieldHintImmobileName,
+      controller: _controllerFieldVehicleName,
+      text: _fieldTextVehicleName,
+      hint: _fieldHintVehicleName,
     );
   }
 
 
   FieldInput buildInputOperationType() {
     return FieldInput(
-      controller: _controllerFieldImmobileOperationType,
-      text: _fieldTextImmobileOperationType,
-      hint: _fieldHintImmobileOperationType,
+      controller: _controllerFieldVehicleOperationType,
+      text: _fieldTextVehicleOperationType,
+      hint: _fieldHintVehicleOperationType,
     );
   }
 
   FieldInput buildInputFullValue() {
     return FieldInput(
-      controller: _controllerFieldImmobileFullValue,
-      text: _fieldTextImmobileFullValue,
-      hint: _fieldHintImmobileFullValue,
+      controller: _controllerFieldVehicleFullValue,
+      text: _fieldTextVehicleFullValue,
+      hint: _fieldHintVehicleFullValue,
       keyboardType: TextInputType.number
     );
   }
 
   FieldInput buildInputManager() {
     return FieldInput(
-      controller: _controllerFieldImmobileManager,
-      text: _fieldTextImmobileManager,
-      hint: _fieldHintImmobileManager,
+      controller: _controllerFieldVehicleManager,
+      text: _fieldTextVehicleManager,
+      hint: _fieldHintVehicleManager,
     );
   }
 
@@ -122,24 +122,24 @@ class ScreenImmobileFormState extends State<ScreenImmobileForm> {
   Future<dynamic> buildActionOnPressed() {
       return showDialog(context: context, builder: (contextDialog){ // Tomar cuidado quando trocar de contexto
             return AuthDialog(onConfirm: (String password) {
-                _postImmobile(context, password).then((value) => Navigator.pop(context));
+                _postVehicle(context, password).then((value) => Navigator.pop(context));
               },);
           });
     }
 
 
-  Future<void> _postImmobile(BuildContext context, String password) async {
+  Future<void> _postVehicle(BuildContext context, String password) async {
     //TODO - TRANSFORMAR STRING PRA ENUM
 
-    if (_controllerFieldImmobileName.value != null) {
+    if (_controllerFieldVehicleName.value != null) {
 
-      List<RequestPostAssetEntity> body =  buildImmobile().toPost();
+      List<RequestPostAssetEntity> body =  buildVehicle().toPost();
 
       await request(body, password, context);
 
       //Navigator.pop(context);
       //Está direcionando para a home pq n consegui atulizar o widget logo apos que salvar
-      _routerFactory.navigateToScreenImmobileList(context);
+      _routerFactory.navigateToScreenVehicleList(context);
 
     }
 
@@ -154,9 +154,12 @@ class ScreenImmobileFormState extends State<ScreenImmobileForm> {
   }
 
 
-  Immobile buildImmobile() =>
-      Immobile(null, _controllerFieldImmobileName.text.toString(), null, null, 10, _controllerFieldImmobileManager.text);
+  Vehicle buildVehicle() {
+    double? fullValue = double.tryParse(_controllerFieldVehicleFullValue.text.toString());
 
+    return Vehicle(null, _controllerFieldVehicleName.text.toString(), fullValue, _controllerFieldVehicleManager.text);
+
+  }
 
 
 }

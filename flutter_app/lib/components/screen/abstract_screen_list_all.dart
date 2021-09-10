@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/loading/progress.dart';
-import 'package:flutter_app/http/helper/helper/http_helper.dart';
-import 'package:flutter_app/models/owner/domain/owner.dart';
+import 'package:flutter_app/http/helper/helper/webclient_helper.dart';
+import 'package:flutter_app/router/factory/router_factory.dart';
 
 
 import '../message/centered_message.dart';
@@ -27,8 +27,6 @@ abstract class AbstractScreenStateListAll extends State<ScreenAbstractListAll> {
 
   //abstract final icon;
 
-//  abstract final AbstractItem item;
-
   abstract Future<List<AbstractResponse>> future;
 
   abstract StatefulWidget navigateScreenButton;
@@ -36,8 +34,9 @@ abstract class AbstractScreenStateListAll extends State<ScreenAbstractListAll> {
   abstract CenteredMessage centeredMessageWhenIsEmpty;
 
 
-  final httpHelper = HttpHelper();
+  final httpHelper = WebClientHelper();
   final centeredMessageFactory = CenteredMessageFactory();
+  final routerFactory = RouterFactory();
 
 
   @override
@@ -45,7 +44,7 @@ abstract class AbstractScreenStateListAll extends State<ScreenAbstractListAll> {
     return Scaffold(
       appBar: buildTitle(),
       body: buildBody(),
-      floatingActionButton: buildActionButton(context),
+      floatingActionButton: buildFloatingButton(context),
     );
   }
 
@@ -75,6 +74,7 @@ abstract class AbstractScreenStateListAll extends State<ScreenAbstractListAll> {
           case ConnectionState.done:
 
             if(httpHelper.existData(snapshot)){
+
               return ListView.builder(
 
                   itemBuilder: (context, index) {
@@ -95,20 +95,15 @@ abstract class AbstractScreenStateListAll extends State<ScreenAbstractListAll> {
 
 
 
-  FloatingActionButton buildActionButton(BuildContext context) {
+  FloatingActionButton buildFloatingButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        navigateToScreen(context, navigateScreenButton).then((value) => setState(() {}));
+        routerFactory.navigateTo(context, navigateScreenButton)
+            .then((value) => setState(() {}));
+        //navigateToScreen(context, navigateScreenButton).then((value) => setState(() {}));
       },
       child: Icon(Icons.add),
     );
-  }
-
-
-
-
-  Future<dynamic> navigateToScreen(BuildContext context, StatefulWidget screenNavigate) {
-    return Navigator.of(context).push(MaterialPageRoute(builder: (context) => screenNavigate));
   }
 }
 

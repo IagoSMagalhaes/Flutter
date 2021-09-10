@@ -6,7 +6,7 @@ import 'package:flutter_app/screens/dashboard/dashboard.dart';
 import 'package:flutter_app/screens/owner/screens_owner_form_post.dart';
 
 
-class AssetRouter {
+class RouterAssetConfig {
 
   String get initialRoute => '/home';
 
@@ -15,8 +15,8 @@ class AssetRouter {
       //'/home': (BuildContext context) =>  AuthDialog(),
       '/home': (BuildContext context) =>  Dashboard(),
       //'/home': (BuildContext context) =>  ScreenAssetList(),
-      '/post/asset': (BuildContext context) => ScreensAssetForm(),
-      '/post/owner': (BuildContext context) => ScreensOwnerForm(),
+      '/post/asset': (BuildContext context) => ScreenAssetForm(),
+      '/post/owner': (BuildContext context) => ScreenOwnerForm(),
     };
   }
 

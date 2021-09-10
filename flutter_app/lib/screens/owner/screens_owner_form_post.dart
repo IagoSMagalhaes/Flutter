@@ -3,49 +3,60 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/auth/asset_auth_dialog.dart';
 import 'package:flutter_app/components/field/field_input.dart';
+import 'package:flutter_app/components/response_dialog.dart';
 import 'package:flutter_app/http/webclients/asset/owner/webclient_owner.dart';
 import 'package:flutter_app/models/owner/domain/owner.dart';
 import 'package:flutter_app/models/owner/dto/request/request_post_owner.dart';
+import 'package:flutter_app/router/factory/router_factory.dart';
 
 const _titulo = "Criar Contato";
+const _textSuccessPost = "Contato cadastrado com sucesso";
 
 const _fieldTextOwnerName = "Nome";
 const _fieldTextOwnerCellphone = "Telefone";
 
-const _fieldHintOwnerCellphone = "(00) 0 0000-0000)";
+const _fieldHintOwnerCellphone = "(00) 0 0000-0000";
 
 const _textButton = "Confirmar";
 
-class ScreensOwnerForm extends StatefulWidget {
+class ScreenOwnerForm extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() {
-    return ScreensOwnerFormState();
+    return ScreenOwnerFormState();
   }
 }
 
-class ScreensOwnerFormState extends State<ScreensOwnerForm> {
+class ScreenOwnerFormState extends State<ScreenOwnerForm> {
+
   final TextEditingController _controllerFieldOwnerName =
       TextEditingController();
+
   final TextEditingController _controllerFieldOwnerCellphone =
       TextEditingController();
+
+  final RouterFactory _routerFactory = RouterFactory();
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildInputName(),
-            buildInputCellphone(),
-            buildInputSend()
-          ],
-        ),
-      ),
       appBar: AppBar(title: Text(_titulo)),
+      body: buildBody(),
     );
   }
 
+  SingleChildScrollView buildBody() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          buildInputName(),
+          buildInputCellphone(),
+          buildButtonPost()
+        ],
+      ),
+    );
+  }
 
 
 
@@ -64,34 +75,47 @@ class ScreensOwnerFormState extends State<ScreensOwnerForm> {
     );
   }
 
-  ElevatedButton buildInputSend()  =>
-      ElevatedButton(onPressed: () => showDialog(context: context, builder: (context){
-        return AuthDialog(onConfirm: (String password) {
-          print(password);
-
-        },);
-      }),
-      //ElevatedButton(onPressed: () => _saveOwner(context),
-                     child: Text(_textButton));
-
+  ElevatedButton buildButtonPost() {
+    return ElevatedButton(onPressed: () => showDialog(context: context, builder: (contextDialog){
+      return AuthDialog(onConfirm: (String password) {
+        _postOwner(context, password);
+      },);
+    }),
+        child: Text(_textButton));
+  }
 
 
 
-  void _saveOwner(BuildContext context) {
+  Future<void> _postOwner(BuildContext context, String password) async {
+
     //TODO - TRANSFORMAR STRING PRA ENUM
 
     if (_controllerFieldOwnerName.value != null) {
-      Owner ownerSave = Owner(null, _controllerFieldOwnerName.text,
-          _controllerFieldOwnerCellphone.text);
 
-      if (ownerSave.name != null) {
-        //Fazer em uma linha só
-        List<RequestPostOwnerEntity> body = [RequestPostOwnerEntity(ownerSave.name, ownerSave.cellphone)];
+        final body = buildOwner().toPost();
 
-        WebClientOwner().post(body).then((value) =>
-            Navigator.pop(context, ownerSave));
-      }
+        await request(body, password, context);
+
+        Navigator.pop(context);
+        //Está direcionando para a home pq n consegui atulizar o widget logo apos que salvar
+        _routerFactory.navigateToScreenOwnerList(context);
+
     }
+
+
   }
 
+  Future<void> request(List<RequestPostOwnerEntity> body, String password, BuildContext context) async {
+    await WebClientOwner().post(body, password)
+        .catchError((exception) => FailureDialog(exception.toString()),
+        test: (e) => e is Exception);
+
+    await SuccessDialog(_textSuccessPost).showDialogSuccess(context);
+  }
+
+
+  Owner buildOwner() {
+    return Owner(null, _controllerFieldOwnerName.text,
+        _controllerFieldOwnerCellphone.text);
+  }
 }

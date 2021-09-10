@@ -2,28 +2,23 @@
 
 import 'dart:convert';
 
-import 'package:flutter_app/http/helper/interceptor/http_interceptor.dart';
-import 'package:flutter_app/models/asset/dto/request/request_post_asset_entity.dart';
-import 'package:flutter_app/models/asset/dto/response/response_get_asset_entity.dart';
-import 'package:flutter_app/models/vehicles/dto/response/response_get_vehicles_entity.dart';
-import 'package:http/http.dart';
-import 'package:http_interceptor/http_interceptor.dart';
+import 'package:flutter_app/http/helper/helper/abstract_webclient.dart';
+import 'package:flutter_app/models/vehicle/dto/request/request_post_vehicle_entity.dart';
+import 'package:flutter_app/models/vehicle/dto/response/response_get_vehicles_entity.dart';
 
 
-class WebClientVehicles {
+class WebClientVehicles extends AbstractWebClient{
 
-  final String postsURL = "https://jsonplaceholder.typicode.com/todos";
-  final String localhostVehiclesBaseUrl = "http://localhost:8081/vehicle/v1";
-  Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
-
+  final _urlVehicle = "vehicle/v1";
 
   Future<List<ResponseGetVehicleEntity>> findAll() async {
 
-    final httpResponse = await client.get(Uri.parse(localhostVehiclesBaseUrl)).timeout(Duration(seconds: 15));
+    final httpResponse = await client.get(Uri.parse(localhostBaseUrl + _urlVehicle)).timeout(Duration(seconds: 15));
+
     List<ResponseGetVehicleEntity> responseMethod = [];
 
-
     if (httpResponse.statusCode == 200) {
+
       List<dynamic> datas = json.decode(httpResponse.body);
 
       List<ResponseGetVehicleEntity> assets = [];
@@ -39,6 +34,27 @@ class WebClientVehicles {
       return [];
     }
 
+
+  }
+
+  Future<void> post(List<RequestPostVehicleEntity> vehicles, String password) async {
+
+    vehicles.forEach((vehicle) async {
+
+      final String body = vehicle.toJson();
+
+      final httpResponse = await client.post(Uri.parse(localhostBaseUrl + _urlVehicle),
+          headers:  buildHeader(password),
+          body: body)
+          .timeout(Duration(seconds: 15));
+
+      if(httpResponse.statusCode == 200){
+        return;
+      } else {
+        genericThrowHttpError(httpResponse.statusCode);
+      }
+
+    });
 
   }
 }

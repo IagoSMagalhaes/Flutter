@@ -44,6 +44,7 @@ class ListaTransferenciaState extends State<ListaTransferencias> {
   }
 
   void _atualiza(Transferencia transferenciaRecebida) {
+
     if (transferenciaRecebida != null) {
       setState(() {
         widget._transferencias.add(transferenciaRecebida);
