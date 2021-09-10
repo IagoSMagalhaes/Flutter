@@ -110,40 +110,28 @@ class ScreenOwnerFormState extends State<ScreenOwnerForm> {
   }
 
   Future<void> request(List<RequestPostOwnerEntity> body, String password, BuildContext context) async {
-    print("12");
-    /*
-    await WebClientOwner().post(body, password)
-        .catchError((exception)  {
-      print("12.1");
-          FailureDialog(exception.toString());
-    },
-        test: (e) => e is HttpException)
-        .catchError((exception) {
-      print("11.1");
-          FailureDialog(exception.toString()).showUnknowError(context);
-        } );
 
-     */
-
-    WebClientOwner().post(body, password, context)
-                      .catchError((e) {
-                        print("cai aqui");
-                        FailureDialog(e.toString()).showDialogError(context, e);
+/*
+    final teste = await WebClientOwner().post(body, password, context)
+                      .catchError((e) {FailureDialog(e.toString()).showDialogError(context, e);
                           }, test: (e) => e is HttpException)
-                      .catchError((e) {
-                        print("cai aqui 2");
-                        FailureDialog(e.toString()).showDialogError(context, e);
+                      .catchError((e) {FailureDialog(e.toString()).showDialogError(context, e);
                           }, test: (e) => e is TimeoutException)
-                      .catchError((e) {
-                        print("cai aqui 3");
-                        FailureDialog(e.toString()).showUnknowError(context);})
-                  .then((value) =>
-        SuccessDialog(_textSuccessPost).showDialogSuccess(context)
-    );
+                      .catchError((e) {FailureDialog(e.toString()).showUnknowError(context);})
+        .then((value) {
+          print("entrei");
+          SuccessDialog(_textSuccessPost).showDialogSuccess(context);});
 
-    print("10");
+ */
 
-   // await SuccessDialog(_textSuccessPost).showDialogSuccess(context);
+    print("indo fazer o post");
+    await WebClientOwner().post(body, password, context);
+
+    print("teste");
+    //print(teste);
+    print("indo fazer o success");
+    //await SuccessDialog(_textSuccessPost).showDialogSuccess(context);
+
   }
 
 

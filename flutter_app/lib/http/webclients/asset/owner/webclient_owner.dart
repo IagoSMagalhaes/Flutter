@@ -1,5 +1,6 @@
 
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -43,32 +44,33 @@ class WebClientOwner extends AbstractWebClient {
     }
   }
 
-  Future<ResponseOwnerEntity?> post(List<RequestPostOwnerEntity> assets, String password, BuildContext context) async {
-
+  //Future<void> post(List<RequestPostOwnerEntity> assets, String password, BuildContext context) async {
+  //post(List<RequestPostOwnerEntity> assets, String password, BuildContext context) async {
+  post(List<RequestPostOwnerEntity> assets, String password, BuildContext context) {
 
     assets.forEach((asset) async {
 
       final String body = asset.toJson();
 
-      print("REQUEST httpResponse.statusCode");
       final httpResponse = await client.post(Uri.parse(localhostBaseUrl + _urlOwner),
                                         headers:  buildHeader(password),
                                         body: body)
                                        .catchError((e) => FailureDialog(e.toString()).showUnknowError(context))
+                                       .catchError((e) {FailureDialog(e.toString()).showDialogError(context, e);
+                                            }, test: (e) => e is HttpException)
+                                       .catchError((e) {FailureDialog(e.toString()).showDialogError(context, e);
+                                          }, test: (e) => e is TimeoutException)
+                                       .catchError((e) {FailureDialog(e.toString()).showUnknowError(context);})
                                        .timeout(Duration(seconds: 15));
 
-      print("httpResponse.statusCode");
-      print(httpResponse.statusCode);
-
       if(httpResponse.statusCode == 200){
-        return;
+        await SuccessDialog("salvo com sucesso").showDialogSuccess(context);
       } else {
-        
+
         ApiError apiError = ApiError.fromJson(json.decode(httpResponse.body));
 
         FailureDialog(apiError.message!).showDialogErrorMessage(context);
 
-        // genericThrowHttpError(httpResponse.statusCode);
       }
     });
   }
