@@ -148,7 +148,8 @@ class ScreenVehicleFormState extends State<ScreenVehicleForm> {
   Future<void> request(List<RequestPostAssetEntity> body, String password, BuildContext context) async {
     await WebClientAsset().post(body, password)
                           .catchError((exception) => FailureDialog(exception.toString()),
-                          test: (e) => e is Exception);
+                          test: (e) => e is Exception)
+                          .catchError((exception) => FailureDialog(exception.toString()).showUnknowError(context));
 
     await SuccessDialog(_textSuccessPost).showDialogSuccess(context);
   }

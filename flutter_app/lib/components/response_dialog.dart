@@ -119,4 +119,10 @@ class FailureDialog extends StatelessWidget {
       return FailureDialog(exception.toString());
     });
   }
+
+  void showUnknowError(BuildContext context) {
+    showDialog(context: context, builder: (contextDialog) {
+      return FailureDialog("Erro não esperado");
+    });
+  }
 }

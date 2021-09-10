@@ -1,4 +1,7 @@
 // Criando formulario
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/auth/asset_auth_dialog.dart';
@@ -90,6 +93,7 @@ class ScreenOwnerFormState extends State<ScreenOwnerForm> {
 
     //TODO - TRANSFORMAR STRING PRA ENUM
 
+    print("1");
     if (_controllerFieldOwnerName.value != null) {
 
         final body = buildOwner().toPost();
@@ -106,11 +110,32 @@ class ScreenOwnerFormState extends State<ScreenOwnerForm> {
   }
 
   Future<void> request(List<RequestPostOwnerEntity> body, String password, BuildContext context) async {
+    print("12");
+    /*
     await WebClientOwner().post(body, password)
-        .catchError((exception) => FailureDialog(exception.toString()),
-        test: (e) => e is Exception);
+        .catchError((exception)  {
+      print("12.1");
+          FailureDialog(exception.toString());
+    },
+        test: (e) => e is HttpException)
+        .catchError((exception) {
+      print("11.1");
+          FailureDialog(exception.toString()).showUnknowError(context);
+        } );
 
-    await SuccessDialog(_textSuccessPost).showDialogSuccess(context);
+     */
+
+    WebClientOwner().post(body, password, context)
+                      .catchError((e) {FailureDialog(e.toString()).showDialogError(context, e);
+                          }, test: (e) => e is HttpException)
+                      .catchError((e) {FailureDialog(e.toString()).showDialogError(context, e);
+                          }, test: (e) => e is TimeoutException)
+                      .catchError((e) {FailureDialog(e.toString()).showUnknowError(context);})
+                  .then((value) => SuccessDialog(_textSuccessPost).showDialogSuccess(context));
+
+    print("10");
+
+   // await SuccessDialog(_textSuccessPost).showDialogSuccess(context);
   }
 
 
