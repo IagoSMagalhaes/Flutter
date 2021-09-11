@@ -41,9 +41,8 @@ class Dashboard extends StatelessWidget {
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(120.0),
-        child: Image.asset('images/logo_teste.gif', height: 250, width: 650),
-        //child: Image.asset('images/logo_teste.gif', height: 250, width:  250),
-        //child: Image.asset('images/asset-management.png'),
+        child: Image.asset('images/logo.gif'),
+        //child: Image.asset('images/logo_teste.gif', height: 250, width:  250)
       ),
     );
   }

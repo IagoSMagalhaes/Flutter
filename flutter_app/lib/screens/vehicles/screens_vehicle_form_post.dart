@@ -84,7 +84,6 @@ class ScreenVehicleFormState extends State<ScreenVehicleForm> {
         children: [
           buildInputName(),
           buildInputBrand(),
-          buildInputBrandTest(),
           buildInputOperationType(),
           buildInputFullValue(),
           buildInputManager(),
@@ -100,14 +99,6 @@ class ScreenVehicleFormState extends State<ScreenVehicleForm> {
       controller: _controllerFieldVehicleName,
       text: _fieldTextVehicleName,
       hint: _fieldHintVehicleName,
-    );
-  }
-
-  FieldInput buildInputBrand() {
-    return FieldInput(
-      controller: _controllerFieldVehicleBrand,
-      text: "Marca",
-      hint: "Ex: Honda, Toyota, Chevrolet",
     );
   }
 
@@ -131,11 +122,12 @@ class ScreenVehicleFormState extends State<ScreenVehicleForm> {
    */
 
 
-  InputDecorator buildInputBrandTest() {
+  InputDecorator buildInputBrand() {
     return InputDecorator(
       decoration: const InputDecoration(border: OutlineInputBorder()),
       child: DropdownButtonHideUnderline(
-        child: ButtonSelected(options: ["Toyota", "Honda", "Fiat"], defaultValue: "Toyota"),
+        child: ButtonSelected(options: ["Toyota", "Honda", "Fiat"], hint: "Marca"),
+       // child: ButtonSelected(options: ["Toyota", "Honda", "Fiat"], hint: "Marca"),
       ),
     );
   }
@@ -144,7 +136,7 @@ class ScreenVehicleFormState extends State<ScreenVehicleForm> {
     return InputDecorator(
       decoration: const InputDecoration(border: OutlineInputBorder()),
       child: DropdownButtonHideUnderline(
-        child: ButtonSelected(options: ["Venda", "Compra"], defaultValue: "Compra"),
+        child: ButtonSelected(options: ["Venda", "Compra"], hint: "Tipo de Operação"),
       ),
     );
   }
@@ -221,11 +213,6 @@ class ScreenVehicleFormState extends State<ScreenVehicleForm> {
 
 
   DropdownButton<String> buildInputSelectBrand() {
-    List<String> valores = ["Toyota", "Honda", "Fiat"];
-
-    //List<DropdownMenuItem<String>> listDropDown = valores.map((valor) {
-      //return DropdownMenuItem<String>(}).toList();
-
     return DropdownButton<String>(
       value: dropdownValue,
       icon: const Icon(Icons.arrow_downward),
