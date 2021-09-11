@@ -1,23 +1,27 @@
 // Criando formulario
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/auth/asset_auth_dialog.dart';
 import 'package:flutter_app/components/field/field_input.dart';
 import 'package:flutter_app/components/response_dialog.dart';
+import 'package:flutter_app/http/helper/helper/abstract_webclient.dart';
 import 'package:flutter_app/http/webclients/asset/asset/webclient_asset.dart';
 import 'package:flutter_app/models/asset/dto/request/request_post_asset_entity.dart';
 import 'package:flutter_app/models/immobile/domain/immobiles.dart';
 import 'package:flutter_app/router/factory/router_factory.dart';
 
-const _titulo = "Criar Imóvel";
+//Title
+const _title = "Criar Imóvel";
 const _textSuccessPost = "Imóvel cadastrado com sucesso";
 
+//Fields
 const _fieldTextImmobileName = "Nome do patrimonio";
 const _fieldTextImmobileType = "Tipo do patrimônio";
 const _fieldTextImmobileOperationType = "Tipo de operação";
 const _fieldTextImmobileFullValue = "Valor Total";
 const _fieldTextImmobileManager = "Responsável pelo Patrimonio";
-
 
 const _fieldTextImmobileAddressStreet = "Rua";
 const _fieldTextImmobileAddressDistrict = "Bairro";
@@ -31,7 +35,7 @@ const _fieldHintImmobileFullValue = "0.00";
 const _fieldHintImmobileManager = "Ex: Hugo";
 
 
-
+//Button
 const _textButton = "Confirmar";
 
 class ScreenImmobileForm extends StatefulWidget {
@@ -43,7 +47,7 @@ class ScreenImmobileForm extends StatefulWidget {
 
 class ScreenImmobileFormState extends State<ScreenImmobileForm> {
 
-  final RouterFactory _routerFactory = RouterFactory();
+  final WebClientAsset _webClient = WebClientAsset();
 
 
   final TextEditingController _controllerFieldImmobileName =
@@ -61,7 +65,7 @@ class ScreenImmobileFormState extends State<ScreenImmobileForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_titulo)),
+      appBar: AppBar(title: Text(_title)),
       body: buildBody()
     );
   }
@@ -120,11 +124,10 @@ class ScreenImmobileFormState extends State<ScreenImmobileForm> {
 
 
   Future<dynamic> buildActionOnPressed() {
-      return showDialog(context: context, builder: (contextDialog){ // Tomar cuidado quando trocar de contexto
-            return AuthDialog(onConfirm: (String password) {
-                _postImmobile(context, password).then((value) => Navigator.pop(context));
-              },);
-          });
+      return showDialog(context: context, builder: (contextDialog) { // Tomar cuidado quando trocar de contexto
+        return AuthDialog(onConfirm: (String password) =>
+            _postImmobile(context, password));
+      });
     }
 
 
@@ -133,24 +136,19 @@ class ScreenImmobileFormState extends State<ScreenImmobileForm> {
 
     if (_controllerFieldImmobileName.value != null) {
 
-      List<RequestPostAssetEntity> body =  buildImmobile().toPost();
+      final body = buildImmobile().toPost();
 
-      await request(body, password, context);
+      _webClient.post(body, password, context)
+          .then((httpResponse) {
 
-      //Navigator.pop(context);
-      //Está direcionando para a home pq n consegui atulizar o widget logo apos que salvar
-      _routerFactory.navigateToScreenImmobileList(context);
-
+        if(httpResponse.statusCode == 200){
+          SuccessDialog().showDialogSuccess(context, _textSuccessPost);
+        } else {
+          ApiError apiError = ApiError.fromJson(json.decode(httpResponse.body));
+          FailureDialog(message: apiError.message!).showDialogErrorMessage(context);
+        }
+      });
     }
-
-  }
-
-  Future<void> request(List<RequestPostAssetEntity> body, String password, BuildContext context) async {
-    await WebClientAsset().post(body, password)
-                          .catchError((exception) => FailureDialog(exception.toString()),
-                          test: (e) => e is Exception);
-
-    await SuccessDialog(_textSuccessPost).showDialogSuccess(context);
   }
 
 

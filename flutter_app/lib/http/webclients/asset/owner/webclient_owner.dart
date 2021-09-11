@@ -18,7 +18,6 @@ import 'package:http_interceptor/http_interceptor.dart';
 class WebClientOwner extends AbstractWebClient {
 
   final _urlOwner = "owner/v1";
-  final _messageExceptionPost = "owner/v1";
 
   Future<List<ResponseOwnerEntity>> findAll() async {
     final httpResponse = await client.get(Uri.parse(localhostBaseUrl + _urlOwner))
@@ -32,11 +31,11 @@ class WebClientOwner extends AbstractWebClient {
 
       List<dynamic> datas = json.decode(httpResponse.body);
 
-      List<ResponseOwnerEntity> assets = [];
+      List<ResponseOwnerEntity> owners = [];
 
-      datas.forEach((element) => assets.add(ResponseOwnerEntity.fromJson(element)));
+      datas.forEach((element) => owners.add(ResponseOwnerEntity.fromJson(element)));
 
-      responseMethod = assets;
+      responseMethod = owners;
 
       return responseMethod;
     } else {
@@ -44,34 +43,20 @@ class WebClientOwner extends AbstractWebClient {
     }
   }
 
-  //Future<void> post(List<RequestPostOwnerEntity> assets, String password, BuildContext context) async {
-  //post(List<RequestPostOwnerEntity> assets, String password, BuildContext context) async {
-  post(List<RequestPostOwnerEntity> assets, String password, BuildContext context) {
+  Future<Response> post(List<RequestPostOwnerEntity> assets, String password, BuildContext context) async {
 
-    assets.forEach((asset) async {
+    RequestPostOwnerEntity owner = assets.first;
 
-      final String body = asset.toJson();
+      final String body = owner.toJson();
 
-      final httpResponse = await client.post(Uri.parse(localhostBaseUrl + _urlOwner),
+      return client.post(Uri.parse(localhostBaseUrl + _urlOwner),
                                         headers:  buildHeader(password),
                                         body: body)
-                                       .catchError((e) => FailureDialog(e.toString()).showUnknowError(context))
-                                       .catchError((e) {FailureDialog(e.toString()).showDialogError(context, e);
+                                       .catchError((e) {FailureDialog(message: e.toString()).showDialogError(context, e);
                                             }, test: (e) => e is HttpException)
-                                       .catchError((e) {FailureDialog(e.toString()).showDialogError(context, e);
+                                       .catchError((e) {FailureDialog(message: e.toString()).showDialogError(context, e);
                                           }, test: (e) => e is TimeoutException)
-                                       .catchError((e) {FailureDialog(e.toString()).showUnknowError(context);})
+                                       .catchError((e) => FailureDialog().showUnknowError(context))
                                        .timeout(Duration(seconds: 15));
-
-      if(httpResponse.statusCode == 200){
-        await SuccessDialog("salvo com sucesso").showDialogSuccess(context);
-      } else {
-
-        ApiError apiError = ApiError.fromJson(json.decode(httpResponse.body));
-
-        FailureDialog(apiError.message!).showDialogErrorMessage(context);
-
-      }
-    });
   }
 }

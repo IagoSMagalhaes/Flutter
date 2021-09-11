@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/router/factory/router_factory.dart';
 
+const primaryColor = const Color(0xFF01579B);
+const backGroundColor = const Color(0xFFB3E5FC);
+
 
 class Dashboard extends StatelessWidget {
 
@@ -10,8 +13,11 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text('Dashboard'),
+          centerTitle: true,
+          backgroundColor: primaryColor,
+          title: Text('Asset Management'),
         ),
+       // backgroundColor: backGroundColor,
         body: buildDashboard(context));
 
 
@@ -30,11 +36,17 @@ class Dashboard extends StatelessWidget {
 
 
 
-  buildBody()  => Padding(
-      padding: const EdgeInsets.all(100.0),
-      child: Image.asset('images/logo.gif'),
-      //child: Image.asset('images/asset-management.png'),
+  buildBody()  {
+
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(120.0),
+        child: Image.asset('images/logo_teste.gif', height: 250, width: 650),
+        //child: Image.asset('images/logo_teste.gif', height: 250, width:  250),
+        //child: Image.asset('images/asset-management.png'),
+      ),
     );
+  }
 
 
 

@@ -52,6 +52,7 @@ abstract class AbstractScreenStateListAll extends State<ScreenAbstractListAll> {
   AppBar buildTitle() {
     return AppBar(
       title: Text(title),
+      backgroundColor: Colors.blue[900],
     );
   }
 

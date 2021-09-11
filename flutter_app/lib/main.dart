@@ -3,6 +3,10 @@ import 'package:flutter_app/router/main/router_asset_config.dart';
 
 import 'http/webclients/asset/asset/webclient_asset.dart';
 
+
+const primaryColor = const Color(0xFF01579B);
+
+
 void main() {
   runApp(Boot());
   //HttpAsset().post([RequestPostAssetEntity("Suzuki 2008", 10000, "Wagner"), RequestPostAssetEntity("Corolla 2008", 20000, "Hugo")]);
@@ -27,10 +31,13 @@ class Boot extends StatelessWidget {
 
   ThemeData buildTheme() {
     return ThemeData(
+      backgroundColor: primaryColor,
       primaryColor: Colors.blue[900],
-      accentColor: Colors.blueAccent[700],
+      accentColor: Colors.blue[900],
+    //  accentColor: Colors.blueAccent[700],
       buttonTheme: ButtonThemeData(
-        buttonColor: Colors.blueAccent[700],
+        buttonColor: Colors.blue[900],
+       // buttonColor: Colors.blueAccent[700],
         textTheme: ButtonTextTheme.primary,
       ),
     );

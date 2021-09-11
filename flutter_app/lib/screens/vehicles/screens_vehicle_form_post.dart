@@ -1,23 +1,28 @@
 // Criando formulario
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/auth/asset_auth_dialog.dart';
+import 'package:flutter_app/components/button/button_dropdown.dart';
 import 'package:flutter_app/components/field/field_input.dart';
 import 'package:flutter_app/components/response_dialog.dart';
+import 'package:flutter_app/http/helper/helper/abstract_webclient.dart';
 import 'package:flutter_app/http/webclients/asset/asset/webclient_asset.dart';
-import 'package:flutter_app/models/asset/dto/request/request_post_asset_entity.dart';
 import 'package:flutter_app/models/vehicle/domain/vehicles.dart';
-import 'package:flutter_app/router/factory/router_factory.dart';
 
-const _titulo = "Criar Veículo";
+//Title
+const _title = "Criar Veículo";
 const _textSuccessPost = "Veículo cadastrado com sucesso";
 
+
+//Fields
 const _fieldTextVehicleName = "Nome do patrimonio";
+const _fieldTextVehicleBrand = "Marca";
 const _fieldTextVehicleType = "Tipo do patrimônio";
 const _fieldTextVehicleOperationType = "Tipo de operação";
 const _fieldTextVehicleFullValue = "Valor Total";
 const _fieldTextVehicleManager = "Responsável pelo Patrimonio";
-
 
 const _fieldTextVehicleAddressStreet = "Rua";
 const _fieldTextVehicleAddressDistrict = "Bairro";
@@ -31,7 +36,7 @@ const _fieldHintVehicleFullValue = "0.00";
 const _fieldHintVehicleManager = "Ex: Hugo";
 
 
-
+//Button
 const _textButton = "Confirmar";
 
 class ScreenVehicleForm extends StatefulWidget {
@@ -43,34 +48,43 @@ class ScreenVehicleForm extends StatefulWidget {
 
 class ScreenVehicleFormState extends State<ScreenVehicleForm> {
 
-  final RouterFactory _routerFactory = RouterFactory();
+  final WebClientAsset _webClient = WebClientAsset();
+
+  String dropdownValue = 'Toyota';
 
 
-  final TextEditingController _controllerFieldVehicleName =
-      TextEditingController();
+  final TextEditingController _controllerFieldVehicleName = TextEditingController();
+
+  final TextEditingController _controllerFieldVehicleBrand = TextEditingController();
+
   //final TextEditingController _controllerFieldVehicleType =
 //      TextEditingController();
   final TextEditingController _controllerFieldVehicleOperationType =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _controllerFieldVehicleFullValue =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _controllerFieldVehicleManager =
-      TextEditingController();
+  TextEditingController();
+
+  get isSelected => null;
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_titulo)),
-      body: buildBody()
+        appBar: AppBar(title: Text(_title)),
+        body: buildBody()
     );
   }
+
 
   SingleChildScrollView buildBody() {
     return SingleChildScrollView(
       child: Column(
         children: [
           buildInputName(),
+          buildInputBrand(),
+          buildInputBrandTest(),
           buildInputOperationType(),
           buildInputFullValue(),
           buildInputManager(),
@@ -89,7 +103,53 @@ class ScreenVehicleFormState extends State<ScreenVehicleForm> {
     );
   }
 
+  FieldInput buildInputBrand() {
+    return FieldInput(
+      controller: _controllerFieldVehicleBrand,
+      text: "Marca",
+      hint: "Ex: Honda, Toyota, Chevrolet",
+    );
+  }
 
+  /*ToggleButtons buildInputBrandTest() {
+
+
+    return ToggleButtons(children: [Icon(Icons.ac_unit), Icon(Icons.call)], onPressed: (int index) {
+
+      setState(() {
+        for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
+          if (buttonIndex == index) {
+            isSelected[buttonIndex] = true;
+          } else {
+            isSelected[buttonIndex] = false;
+          }
+        }
+      });
+    }, isSelected: isSelected);
+  }
+
+   */
+
+
+  InputDecorator buildInputBrandTest() {
+    return InputDecorator(
+      decoration: const InputDecoration(border: OutlineInputBorder()),
+      child: DropdownButtonHideUnderline(
+        child: ButtonSelected(options: ["Toyota", "Honda", "Fiat"], defaultValue: "Toyota"),
+      ),
+    );
+  }
+
+  InputDecorator buildInputOperationType() {
+    return InputDecorator(
+      decoration: const InputDecoration(border: OutlineInputBorder()),
+      child: DropdownButtonHideUnderline(
+        child: ButtonSelected(options: ["Venda", "Compra"], defaultValue: "Compra"),
+      ),
+    );
+  }
+
+/*
   FieldInput buildInputOperationType() {
     return FieldInput(
       controller: _controllerFieldVehicleOperationType,
@@ -98,12 +158,14 @@ class ScreenVehicleFormState extends State<ScreenVehicleForm> {
     );
   }
 
+ */
+
   FieldInput buildInputFullValue() {
     return FieldInput(
-      controller: _controllerFieldVehicleFullValue,
-      text: _fieldTextVehicleFullValue,
-      hint: _fieldHintVehicleFullValue,
-      keyboardType: TextInputType.number
+        controller: _controllerFieldVehicleFullValue,
+        text: _fieldTextVehicleFullValue,
+        hint: _fieldHintVehicleFullValue,
+        keyboardType: TextInputType.number
     );
   }
 
@@ -115,52 +177,81 @@ class ScreenVehicleFormState extends State<ScreenVehicleForm> {
     );
   }
 
-  ElevatedButton buildButtonPost()  => ElevatedButton(onPressed: () => buildActionOnPressed(),
-                                                    child: Text(_textButton));
+  ElevatedButton buildButtonPost() =>
+      ElevatedButton(onPressed: () => buildActionOnPressed(),
+          child: Text(_textButton));
 
 
   Future<dynamic> buildActionOnPressed() {
-      return showDialog(context: context, builder: (contextDialog){ // Tomar cuidado quando trocar de contexto
-            return AuthDialog(onConfirm: (String password) {
-                _postVehicle(context, password).then((value) => Navigator.pop(context));
-              },);
-          });
-    }
+    return showDialog(context: context,
+        builder: (contextDialog) { // Tomar cuidado quando trocar de contexto
+          return AuthDialog(onConfirm: (String password) =>
+              _postVehicle(context, password));
+          //_postVehicle(context, password).then((value) => Navigator.pop(context)));
+        });
+  }
 
 
   Future<void> _postVehicle(BuildContext context, String password) async {
     //TODO - TRANSFORMAR STRING PRA ENUM
 
     if (_controllerFieldVehicleName.value != null) {
+      final body = buildVehicle().toPost();
 
-      List<RequestPostAssetEntity> body =  buildVehicle().toPost();
-
-      await request(body, password, context);
-
-      //Navigator.pop(context);
-      //Está direcionando para a home pq n consegui atulizar o widget logo apos que salvar
-      _routerFactory.navigateToScreenVehicleList(context);
-
+      _webClient.post(body, password, context)
+          .then((httpResponse) {
+        if (httpResponse.statusCode == 200) {
+          SuccessDialog().showDialogSuccess(context, _textSuccessPost);
+        } else {
+          ApiError apiError = ApiError.fromJson(json.decode(httpResponse.body));
+          FailureDialog(message: apiError.message!).showDialogErrorMessage(
+              context);
+        }
+      });
     }
-
   }
-
-  Future<void> request(List<RequestPostAssetEntity> body, String password, BuildContext context) async {
-    await WebClientAsset().post(body, password)
-                          .catchError((exception) => FailureDialog(exception.toString()),
-                          test: (e) => e is Exception)
-                          .catchError((exception) => FailureDialog(exception.toString()).showUnknowError(context));
-
-    await SuccessDialog(_textSuccessPost).showDialogSuccess(context);
-  }
-
 
   Vehicle buildVehicle() {
-    double? fullValue = double.tryParse(_controllerFieldVehicleFullValue.text.toString());
+    double? fullValue = double.tryParse(
+        _controllerFieldVehicleFullValue.text.toString());
 
-    return Vehicle(null, _controllerFieldVehicleName.text.toString(), fullValue, _controllerFieldVehicleManager.text);
-
+    return Vehicle(null, _controllerFieldVehicleName.text.toString(), fullValue,
+        _controllerFieldVehicleManager.text);
   }
 
 
+  DropdownButton<String> buildInputSelectBrand() {
+    List<String> valores = ["Toyota", "Honda", "Fiat"];
+
+    //List<DropdownMenuItem<String>> listDropDown = valores.map((valor) {
+      //return DropdownMenuItem<String>(}).toList();
+
+    return DropdownButton<String>(
+      value: dropdownValue,
+      icon: const Icon(Icons.arrow_downward),
+      iconSize: 24,
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (String? newValue) {
+        setState(() {
+          dropdownValue = newValue!;
+        });
+      },
+      items: <String>['One', 'Two', 'Free', 'Four']
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
 }
+
+
+
+

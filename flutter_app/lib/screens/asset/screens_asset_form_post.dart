@@ -2,9 +2,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/field/field_input.dart';
-import 'package:flutter_app/http/webclients/asset/asset/webclient_asset.dart';
-import 'package:flutter_app/models/asset/domain/asset.dart';
-import 'package:flutter_app/models/asset/dto/request/request_post_asset_entity.dart';
 
 const _titulo = "Criar patrimônio";
 
@@ -80,47 +77,14 @@ class ScreenAssetFormState extends State<ScreenAssetForm> {
     );
   }
 
+  //Nessa tela, nao deve salvar, e sim direcionar para escolhar qual tipo de patrimonio quer inserir
   void _saveAsset(BuildContext context, String password) {
     //TODO - TRANSFORMAR STRING PRA ENUM
 
     if (_controllerFieldAssetName.value != null) {
-      //Asset asset = Asset(name: _controllerFieldAssetName.text,
-//          type: AssetType.immobile,
-//          operationType: OperationType.buy,
-//          fullValue: double.tryParse(_controllerFieldAssetFullValue.text),
-//          manager: _controllerFieldAssetManager.text);
 
-      Asset asset = Asset(null, _controllerFieldAssetName.text.toString(), null, null, 10, _controllerFieldAssetManager.text);
-
-      if (asset.name != null) {
-        final double? valor = double.tryParse(_controllerFieldAssetFullValue.text);
-        final String? type = _controllerFieldAssetType.text;
-
-        List<RequestPostAssetEntity> body = [RequestPostAssetEntity(_controllerFieldAssetName.text, type, valor, _controllerFieldAssetManager.text)];
-
-        WebClientAsset().post(body, password).then((value) =>
-            Navigator.pop(context, asset)
-        );
-      }
     }
-
-
-
-/*
-    Asset asset = Asset(
-        name: _controllerFieldAssetName.text,
-        type: AssetType.immobile,
-        operationType: OperationType.buy,
-        fullValue: double.tryParse(_controllerFieldAssetFullValue.text),
-        manager: _controllerFieldAssetManager.text);
-
-    if (asset.name != null) {
-      Navigator.pop(context, asset);
-    }
-
- */
   }
-
 
   FieldInput buildInputName() {
     return FieldInput(
@@ -166,5 +130,7 @@ class ScreenAssetFormState extends State<ScreenAssetForm> {
   ElevatedButton buildInputSend()  =>
       ElevatedButton(onPressed: () => _saveAsset(context, "password"),
                      child: Text(_textButton));
+
+
 
 }

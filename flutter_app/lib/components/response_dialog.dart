@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ResponseDialog extends StatelessWidget {
-  final String title;
+  final String? title;
   final String message;
   final String buttonText;
   final IconData? icon;
@@ -19,8 +19,8 @@ class ResponseDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Visibility(
-        child: Text(title),
-        visible: title.isNotEmpty,
+        child: Text(title!),
+        visible: title!.isNotEmpty,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -63,72 +63,72 @@ class ResponseDialog extends StatelessWidget {
   }
 }
 
-class SuccessDialog extends StatelessWidget {
-  final String title;
-  final String message;
-  final IconData icon;
 
-  SuccessDialog(
-    this.message, {
-    this.title = 'Sucesso!',
-    this.icon = Icons.done,
-  });
+
+
+
+class SuccessDialog extends StatelessWidget {
+  final String? title = "Sucesso!";
+  final String? message;
+  IconData? icon;
+
+  SuccessDialog({Key? key, this.message, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ResponseDialog(
       title: title,
-      message: message,
-      icon: icon,
+      message: message!,
+      icon: icon == null ? Icons.done : null,
       colorIcon: Colors.green,
     );
   }
 
-  Future<void> showDialogSuccess(BuildContext context) async {
+  Future<void> showDialogSuccess(BuildContext context, String messageSuccess) async {
     await showDialog(
         context: context,
         builder: (contextDialog) {
-          return SuccessDialog(message);
+          return SuccessDialog(message: messageSuccess);
         }).then((value) => Navigator.pop(context));
   }
+
 }
 
-class FailureDialog extends StatelessWidget {
-  final String title;
-  final String message;
-  final IconData icon;
 
-  FailureDialog(
-    this.message, {
-    this.title = 'Erro',
-    this.icon = Icons.warning,
-  });
+
+
+class FailureDialog extends StatelessWidget {
+  String? title = "Erro!";
+  String? message;
+  IconData? icon;
+
+  FailureDialog({Key? key, this.message, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ResponseDialog(
       title: title,
-      message: message,
-      icon: icon,
+      message: message!,
+      icon: icon == null ? Icons.error : null,
       colorIcon: Colors.red,
     );
   }
 
   void showDialogError(BuildContext context, exception) {
     showDialog(context: context, builder: (contextDialog) {
-      return FailureDialog(exception.toString());
+      return FailureDialog(message: exception.toString());
     });
   }
 
   void showDialogErrorMessage(BuildContext context) {
     showDialog(context: context, builder: (contextDialog) {
-      return FailureDialog(message);
+      return FailureDialog(message: message);
     });
   }
 
   void showUnknowError(BuildContext context) {
     showDialog(context: context, builder: (contextDialog) {
-      return FailureDialog("Erro não esperado");
+      return FailureDialog(message: "Erro não esperado");
     });
   }
 }

@@ -1,7 +1,11 @@
 
 
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_app/components/response_dialog.dart';
 import 'package:flutter_app/http/helper/helper/abstract_webclient.dart';
 import 'package:flutter_app/models/asset/dto/request/request_post_asset_entity.dart';
 import 'package:flutter_app/models/asset/dto/response/response_get_asset_entity.dart';
@@ -33,23 +37,25 @@ class WebClientAsset extends AbstractWebClient {
     }
   }
 
-  Future<void> post(List<RequestPostAssetEntity> assets,
-      String password) async {
-    assets.forEach((asset) async {
-      final String assetJson = asset.toJson();
+  Future<Response> post(List<RequestPostAssetEntity> assets, String password, BuildContext context) async {
 
-      final httpResponse = await client.post(Uri.parse(localhostBaseUrlV1),
-          headers: buildHeader(password),
-          body: assetJson)
-          .timeout(Duration(seconds: 15));
+    RequestPostAssetEntity asset = assets.first;
 
-      if (httpResponse.statusCode == 200) {
-        return;
-      } else {
-        genericThrowHttpError(httpResponse.statusCode);
-      }
-    });
+    final String body = asset.toJson();
+
+    return client.post(Uri.parse(localhostBaseUrlV1),
+                       headers:  buildHeader(password),
+                       body: body)
+                       .catchError((e) {FailureDialog(message: e.toString()).showDialogError(context, e);
+                   }, test: (e) => e is HttpException)
+                       .catchError((e) {FailureDialog(message: e.toString()).showDialogError(context, e);
+                   }, test: (e) => e is TimeoutException)
+                       .catchError((e) => FailureDialog().showUnknowError(context))
+                       .timeout(Duration(seconds: 15));
   }
+  
+  
+  
 }
 /*
 
